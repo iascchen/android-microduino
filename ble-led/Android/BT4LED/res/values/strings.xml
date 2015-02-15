@@ -21,10 +21,8 @@
 <resources>
     <string name="app_name">Microduino BlE Light</string>
     <string name="ble_not_supported">BLE is not supported</string>
-    <!--<string name="label_data">Data:</string>-->
     <string name="label_device_address">Device address:</string>
     <string name="label_state">State:</string>
-    <!--<string name="no_data">No data</string>-->
     <string name="connected">Connected</string>
     <string name="disconnected">Disconnected</string>
     <string name="ready">Ready</string>
@@ -46,13 +44,4 @@
     <string name="single_color">Single Color</string>
     <string name="multi_colors">Multi Colors</string>
 
-    <!--<string-array name="roygbiv">-->
-        <!--<item >Red</item>-->
-        <!--<item >Green</item>-->
-        <!--<item >Blue</item>-->
-    <!--</string-array>-->
-    <!--<string name="button">Send</string>-->
-    <!--<string name="red_slide">Red</string>-->
-    <!--<string name="blue_slide">Blue</string>-->
-    <!--<string name="green_slide">Green</string>-->
 </resources>
