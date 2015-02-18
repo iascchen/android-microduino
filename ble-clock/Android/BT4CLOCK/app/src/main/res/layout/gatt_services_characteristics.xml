@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/editText" android:lines="3"
             android:layout_below="@+id/textClock"
-            android:layout_marginTop="40dp" android:layout_alignParentEnd="true" android:text="Hello, My Friends!"/>
+            android:layout_marginTop="40dp" android:layout_alignParentEnd="true" android:text="Hello Friends"/>
 
     <Button
             android:layout_width="240dp"
