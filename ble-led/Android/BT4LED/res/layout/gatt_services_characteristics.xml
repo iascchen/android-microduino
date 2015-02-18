@@ -33,13 +33,13 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:text="@string/disconnected"
-                  android:textSize="18sp" android:layout_alignParentLeft="true"/>
+                  android:textSize="18sp" android:layout_alignParentLeft="true" android:textStyle="italic"/>
         <TextView android:id="@+id/isSerial"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:text="@string/is_serial"
                   android:textSize="18sp"
-                  android:layout_alignParentRight="true"/>
+                  android:layout_alignParentRight="true" android:textStyle="italic"/>
     </RelativeLayout>
 
     <Switch android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
             android:textOff="@string/single_color"
             android:textOn="@string/multi_colors"
             android:checked="false"
-            android:layout_gravity="right"/>
+            android:layout_gravity="right" android:textStyle="bold"/>
 
     <me.iasc.microduino.lights.colorpicker.MultiColorPicker
             android:id="@+id/multiColorPicker"
@@ -74,7 +74,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/toggleButton"
                 android:layout_gravity="center_horizontal"
-                android:checked="false" android:layout_alignParentTop="true" android:layout_centerHorizontal="true"/>
+                android:checked="false" android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
+                android:textStyle="bold"/>
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

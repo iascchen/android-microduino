@@ -26,7 +26,7 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="This App is developed for Microduino. \nYou need 4 modules at least: Core, BT, LED, and USBTTL.\n\n1. Stack them together, \n2. upload the sketch vis USBTTL, \n3. Play.\n"
+            android:text="This App is developed for Microduino. \nYou need 4 modules at least: Core, BT, RTC, and USBTTL.\n\n1. Stack them together, \n2. upload the sketch vis USBTTL, \n3. Play.\n"
             android:id="@+id/textView" android:layout_gravity="center_horizontal"/>
     <TextView
             android:layout_width="wrap_content"

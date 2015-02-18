@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+/*
+ * Copyright (C) 2015 Iasc CHEN
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center" android:padding="20dp">
+
+    <TextView android:id="@+id/connection_state"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/disconnected"
+              android:textSize="18sp"
+              android:layout_alignParentLeft="true"
+              android:textStyle="italic"/>
+    <TextView android:id="@+id/isSerial"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/is_serial"
+              android:textSize="18sp"
+              android:layout_alignParentRight="true"
+              android:textStyle="italic"/>
+
+    <TextView android:id="@+id/rtc"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="RTC TIME"
+              android:layout_below="@+id/connection_state"
+              android:textSize="18sp"
+              android:textColor="@android:color/holo_green_dark"
+              android:layout_marginTop="40dp"
+              android:layout_centerHorizontal="true" android:textStyle="bold"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Waiting"
+            android:id="@+id/returnText"
+            android:textSize="32sp"
+            android:textColor="@android:color/holo_green_dark" android:textStyle="bold"
+            android:layout_below="@+id/rtc" android:layout_centerHorizontal="true" android:textAlignment="inherit"/>
+    <Button
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/timeButton"
+            android:layout_gravity="center_horizontal"
+            android:checked="false"
+            android:text="Sync RTC With Phone" android:layout_below="@+id/returnText" android:layout_centerHorizontal="true" android:layout_marginTop="20dp"
+            android:textStyle="bold" android:enabled="false"/>
+    <TextClock
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textClock"
+            android:textSize="18sp"
+            android:layout_below="@+id/timeButton" android:layout_centerHorizontal="true"
+            android:format24Hour="yyyy-MM-dd HH:mm:ss"/>
+
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText" android:lines="3"
+            android:layout_below="@+id/textClock"
+            android:layout_marginTop="40dp" android:layout_alignParentEnd="true" android:text="Hello, My Friends!"/>
+
+    <Button
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/sendButton"
+            android:layout_gravity="center_horizontal"
+            android:checked="false"
+            android:text="Send Message"
+            android:layout_below="@+id/editText"
+            android:layout_alignStart="@+id/timeButton" android:textStyle="bold" android:enabled="false"/>
+
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/infoImage"
+            android:background="@drawable/gu"
+            android:layout_alignBottom="@+id/sendButton" android:layout_alignEnd="@+id/editText"/>
+
+
+</RelativeLayout>

@@ -19,7 +19,7 @@
 
 -->
 <resources>
-    <string name="app_name">Microduino BLE Light</string>
+    <string name="app_name">Microduino BLE Clock</string>
     <string name="ble_not_supported">BLE is not supported</string>
     <string name="label_device_address">Device address:</string>
     <string name="label_state">State:</string>
@@ -41,6 +41,4 @@
     <string name="menu_refresh">Refresh</string>
     <string name="is_serial">Searching Serial</string>
 
-    <string name="single_color">Single Color</string>
-    <string name="multi_colors">Multi Colors</string>
 </resources>
