@@ -286,7 +286,7 @@ public class BluetoothLeService extends Service {
         }
         mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
 
-        // This is specific to Heart Rate Measurement.
+        // This is specific to RX_TX.
         if (UUID_HM_RX_TX.equals(characteristic.getUuid())) {
             BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
                     UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));

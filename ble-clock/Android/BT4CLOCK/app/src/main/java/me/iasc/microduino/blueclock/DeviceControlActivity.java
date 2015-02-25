@@ -98,11 +98,16 @@ public class DeviceControlActivity extends Activity {
                 invalidateOptionsMenu();
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 BluetoothGattService gattService = mBluetoothLeService.getSoftSerialService();
+                if (gattService == null) {
+                    Toast.makeText(DeviceControlActivity.this, getString(R.string.without_service), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 characteristicTX = gattService.getCharacteristic(BluetoothLeService.UUID_HM_RX_TX);
                 //characteristicRX = gattService.getCharacteristic(BluetoothLeService.UUID_HM_RX_TX);
                 characteristicRX = characteristicTX;
 
-                if ((gattService != null) && (characteristicTX != null)) {
+                if (characteristicTX != null) {
                     mBluetoothLeService.setCharacteristicNotification(characteristicTX, true);
 
                     isSerial.setText("Serial ready");

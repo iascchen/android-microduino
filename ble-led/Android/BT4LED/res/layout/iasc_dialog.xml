@@ -23,21 +23,20 @@
               android:id="@+id/dialog"
               android:layout_width="match_parent"
               android:layout_height="match_parent" android:padding="10dp">
-    <TextView
+    <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="This App is developed for Microduino. \nYou need 4 modules at least: Core, BT, LED, and USBTTL.\n\n1. Stack them together, \n2. upload the sketch vis USBTTL, \n3. Play.\n"
-            android:id="@+id/textView" android:layout_gravity="center_horizontal"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="https://github.com/iascchen/android-microduino"
-            android:id="@+id/textView2" android:layout_gravity="center_horizontal"/>
+            android:id="@+id/imageView" android:layout_gravity="center_horizontal" android:src="@drawable/gu"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="\nWeibo: @问天鼓\n"
             android:id="@+id/textView3" android:layout_gravity="center_horizontal"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="https://github.com/iascchen/android-microduino"
+            android:id="@+id/textView2" android:layout_gravity="center_horizontal"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,6 +47,11 @@
             android:layout_height="wrap_content"
             android:text="iasc@163.com"
             android:id="@+id/textView5" android:layout_gravity="center_horizontal"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\nThis App is developed for Microduino. \nYou need 4 modules at least: Core, BT, LED, and USBTTL.\n\n1. Stack them together, \n2. upload the sketch vis USBTTL, \n3. Play.\n"
+            android:id="@+id/textView" android:layout_gravity="center_horizontal"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
