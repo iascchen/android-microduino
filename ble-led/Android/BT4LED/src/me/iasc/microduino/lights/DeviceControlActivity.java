@@ -104,8 +104,11 @@ public class DeviceControlActivity extends Activity {
                     return;
                 }
 
-                characteristicTX = gattService.getCharacteristic(BluetoothLeService.UUID_HM_RX_TX);
-                //characteristicRX = gattService.getCharacteristic(BluetoothLeService.UUID_HM_RX_TX);
+                if(mDeviceName.startsWith("Microduino")) {
+                    characteristicTX = gattService.getCharacteristic(BluetoothLeService.UUID_MD_RX_TX);
+                }else if(mDeviceName.startsWith("EtOH")) {
+                    characteristicTX = gattService.getCharacteristic(BluetoothLeService.UUID_ETOH_RX_TX);
+                }
                 characteristicRX = characteristicTX;
 
                 if (characteristicTX != null) {
@@ -310,7 +313,7 @@ public class DeviceControlActivity extends Activity {
 
     // on change of single color
     private void makeChange(int color) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append(Color.red(color)).append(",")
                 .append(Color.green(color)).append(",")
@@ -322,7 +325,7 @@ public class DeviceControlActivity extends Activity {
 
     private void makeChange(int[] colors) {
         for (int i = 0; i < colors.length; i++) {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append(Color.red(colors[i])).append(",")
                     .append(Color.green(colors[i])).append(",")
                     .append(Color.blue(colors[i])).append(",")

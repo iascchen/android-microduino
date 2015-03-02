@@ -46,8 +46,8 @@ public class BluetoothLeService extends Service {
             "bluetooth.le.EXTRA_DATA";
 
     public final static UUID UUID_SOFT_SERIAL_SERVICE = UUID.fromString(SampleGattAttributes.SOFT_SERIAL_SERVICE);
-    public final static UUID UUID_HM_RX_TX = UUID.fromString(SampleGattAttributes.HM_RX_TX);
-
+    public final static UUID UUID_MD_RX_TX = UUID.fromString(SampleGattAttributes.MD_RX_TX);
+    public final static UUID UUID_ETOH_RX_TX = UUID.fromString(SampleGattAttributes.ETOH_RX_TX);
 
     private static final int STATE_DISCONNECTED = 0;
     private static final int STATE_CONNECTING = 1;
@@ -285,7 +285,8 @@ public class BluetoothLeService extends Service {
         mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
 
         // This is specific to Heart Rate Measurement.
-        if (UUID_HM_RX_TX.equals(characteristic.getUuid())) {
+        if (UUID_MD_RX_TX.equals(characteristic.getUuid())
+                || UUID_ETOH_RX_TX.equals(characteristic.getUuid())) {
             BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
                     UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
             descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);

@@ -23,24 +23,24 @@
 
 #include <Wire.h>
 #include <Rtc_Pcf8563.h>
-#include <SoftwareSerial.h>
+// #include <SoftwareSerial.h>
 
 // RX, TX
-SoftwareSerial mySerial(4, 5); 
+// SoftwareSerial mySerial(4, 5); 
 
 Rtc_Pcf8563 rtc;
 
 const int interval = 990; // 1000 ms
 
 byte cmdByte;
-String msg = "Microduino";
+String msg = "EtOH";
 int _year,_month,_day,_hour,_minute,_sec;
 String dateStr, ret;
 
 void setup() {
   // initialize serial:
-  mySerial.begin(9600);
-  Serial.begin(9600);
+  // mySerial.begin(9600);
+  Serial.begin(115200);
 }
 
 void loop() {
@@ -50,29 +50,29 @@ void loop() {
   delay(1);
   ret = getRtcTimeString();
 
-  Serial.println(ret + " -> " + msg);
-  mySerial.print(ret);
+  Serial.print(ret);
+  //mySerial.print(ret);
 
   delay(interval);
 }
 
 void processCommand(){
-  if (mySerial.available() > 0) {
-    cmdByte = mySerial.read();
+  if (Serial.available() > 0) {
+    cmdByte = Serial.read();
 
     switch (cmdByte) {
     case 't' :
-      _year = mySerial.parseInt(); 
-      _month = mySerial.parseInt(); 
-      _day = mySerial.parseInt(); 
-      _hour = mySerial.parseInt();
-      _minute = mySerial.parseInt();
-      _sec = mySerial.parseInt();
+      _year = Serial.parseInt(); 
+      _month = Serial.parseInt(); 
+      _day = Serial.parseInt(); 
+      _hour = Serial.parseInt();
+      _minute = Serial.parseInt();
+      _sec = Serial.parseInt();
       setRtcTime(_year, _month, _day, _hour, _minute, _sec);
       break;
 
     case 'm' :
-      msg = mySerial.readStringUntil('\n');
+      msg = Serial.readStringUntil('\n');
       break;
     }
   }
