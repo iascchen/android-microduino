@@ -20,7 +20,9 @@ You need 4 modules at least: Core, BT, LED, and USBTTL.
 
 ## ble-clock
 
-Android APP control Microduino RTC, Sync RTC time with Phone.
+Sync RTC time with Phone.
+
+Android APP control Microduino RTC, 
 Tested on Android 4.3(Samsung S3) and 4.4(Sony Xperia).
 
 You need 4 modules at least: Core, BT, RTC, and USBTTL.
@@ -30,3 +32,11 @@ You need 4 modules at least: Core, BT, RTC, and USBTTL.
 3. Play Android App.
 
 ![](ble-clock/docs/clock-1.png)
+
+## ble-voice
+
+Manage the commands of voice controller.
+Tested on Android 4.4(Sony Xperia).
+
+
+
