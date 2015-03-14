@@ -35,8 +35,8 @@ public class VoiceCmdDetailActivity extends Activity {
 
     public static final String EXTRAS_COMMAND = "command";
 
-    public static final int COMMAND_MAX_LEN = 19;
-//    public static final int COMMAND_MAX_LEN = 18 + 9;
+    public static final int COMMAND_MAX_LEN = 18;
+    public static final int MSG_MAX_LEN = 18 + 9; // voice 18 + other chars 9
 
     VoiceCmdModel cmd;
     VoiceCmdDAO cmdDAO = null;
@@ -92,8 +92,8 @@ public class VoiceCmdDetailActivity extends Activity {
 
                 updateCmdInfo(cmd);
 
-                if (cmd.toString().length() > COMMAND_MAX_LEN) {
-                    toastMessage(getString(R.string.cmd_too_long));
+                if (cmd.toString().length() > MSG_MAX_LEN) {
+                    toastMessage(getString(R.string.cmd_too_long) + " " + COMMAND_MAX_LEN);
                     return;
                 }
 

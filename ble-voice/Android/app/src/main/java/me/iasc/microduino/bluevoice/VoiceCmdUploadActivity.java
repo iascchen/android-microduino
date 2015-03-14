@@ -51,11 +51,19 @@ public class VoiceCmdUploadActivity extends Activity {
     private static String C0 = "{c0}";
 
     public static int BLE_MSG_SEND_INTERVAL = 100;
+    public static int BLE_MSG_BUFFER_LEN = 18;
+
+    public List<VoiceCmdModel> getCmdlist() {
+        return cmdlist;
+    }
 
     public static VoiceCmdDAO cmdDAO = null;
     private List<VoiceCmdModel> cmdlist;
 
     private String mDeviceName, mDeviceAddress;
+
+    StringBuilder msgBuffer;
+
 
     private Button sendButton;
     private TextView isSerial, mConnectionState, reviewText, returnText;
@@ -161,12 +169,12 @@ public class VoiceCmdUploadActivity extends Activity {
         cmdDAO = new VoiceCmdDAO(this);
         cmdlist = cmdDAO.getVoiceCmds();
 
-        StringBuffer sb = new StringBuffer(C0);
+        msgBuffer = new StringBuilder(C0);
         for (VoiceCmdModel _m : cmdlist) {
-            sb.append("\n").append(_m.toString());
+            msgBuffer.append(_m.toString());
         }
 
-        reviewText.setText(sb.toString());
+        reviewText.setText(msgBuffer.toString());
 
         sendButton = (Button) findViewById(R.id.sendButton);
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -286,13 +294,18 @@ public class VoiceCmdUploadActivity extends Activity {
     }
 
     private void sendMessage(String msg) {
-        Log.d(TAG, "Sending Result=" + msg + ":" + msg.length());
+        int msglen = msg.length();
+        Log.d(TAG, "Sending Result=" + msglen + ":" + msg);
 
         if (characteristicReady && (mBluetoothLeService != null)
                 && (characteristicTX != null) && (characteristicRX != null)) {
-            characteristicTX.setValue(msg);
-            mBluetoothLeService.writeCharacteristic(characteristicTX);
             mBluetoothLeService.setCharacteristicNotification(characteristicRX, true);
+
+            for (int offset = 0; offset < msglen; offset += BLE_MSG_BUFFER_LEN) {
+                characteristicTX.setValue(msg.substring(offset, Math.min(offset + BLE_MSG_BUFFER_LEN, msglen)));
+                mBluetoothLeService.writeCharacteristic(characteristicTX);
+                wait_ble(BLE_MSG_SEND_INTERVAL);
+            }
         } else {
             Toast.makeText(VoiceCmdUploadActivity.this, getString(R.string.disconnected), Toast.LENGTH_SHORT).show();
         }
@@ -334,13 +347,7 @@ public class VoiceCmdUploadActivity extends Activity {
         @Override
         protected String doInBackground(Integer... params) {
             if (characteristicReady) {
-                cmdlist = cmdDAO.getVoiceCmds();
-
-                sendMessage(C0);
-                for (VoiceCmdModel _m : cmdlist) {
-                    wait_ble(BLE_MSG_SEND_INTERVAL);
-                    sendMessage(_m.toString());
-                }
+                sendMessage(msgBuffer.toString());
             }
             return "Done";
         }

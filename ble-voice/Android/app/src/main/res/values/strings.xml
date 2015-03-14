@@ -59,7 +59,7 @@
     <string name="unsaved">Unsaved record should not be deleted!</string>
     <string name="duplicated">Code or Voice conflicts with other command, please modify them.</string>
     <string name="duplicated_voice">Voice conflicts with other command, please modify them.</string>
-    <string name="cmd_too_long">The length of Voice MUST be less 11</string>
+    <string name="cmd_too_long">The length of Voice MUST be less</string>
     <string name="done">Done</string>
 
 </resources>
