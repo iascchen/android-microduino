@@ -159,6 +159,8 @@ public class UploadMatrixActivity extends Activity {
                     toastMessage(getString(R.string.unsaved));
                 }
             } else if (v == buttonSend) {
+                updateMatrixInfo(currMatrix);
+
                 UploadAsyncTask asyncTask = new UploadAsyncTask();
                 asyncTask.execute();
             }
