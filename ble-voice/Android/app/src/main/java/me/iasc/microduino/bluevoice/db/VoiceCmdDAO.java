@@ -59,9 +59,9 @@ public class VoiceCmdDAO extends BleDBDAO {
         return result;
     }
 
-    public int deleteVoiceCmd(VoiceCmdModel device) {
+    public int deleteVoiceCmd(VoiceCmdModel cmd) {
         return database.delete(DataBaseHelper.VOICE_CMD_TABLE,
-                WHERE_ID_EQUALS, new String[]{device.getId() + ""});
+                WHERE_ID_EQUALS, new String[]{cmd.getId() + ""});
     }
 
     public void deleteAll() {
