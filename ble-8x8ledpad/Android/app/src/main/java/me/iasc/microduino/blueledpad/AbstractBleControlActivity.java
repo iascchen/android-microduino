@@ -26,31 +26,37 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.*;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 import me.iasc.microduino.blueledpad.ble.BluetoothLeService;
 
-public class UploadStringActivity extends Activity {
-    private final static String TAG = UploadStringActivity.class.getSimpleName();
+public abstract class AbstractBleControlActivity extends Activity {
+    private final static String TAG = AbstractBleControlActivity.class.getSimpleName();
 
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
 
     public static int BLE_MSG_SEND_INTERVAL = 100;
-    public static int BLE_MSG_BUFFER_LEN = 8;
+    public static int BLE_MSG_BUFFER_LEN = 18;
 
-    private String mDeviceName, mDeviceAddress;
+    protected String currDeviceName, currDeviceAddress;
 
-    private Button sendButton;
-    private TextView isSerial, mConnectionState;
-    private EditText editMsg;
-    private ImageView infoButton;
+    protected Activity activity;
 
-    private BluetoothLeService mBluetoothLeService;
-    private BluetoothGattCharacteristic characteristicTX, characteristicRX;
-    private boolean mConnected = false, characteristicReady = false;
+    protected TextView isSerial, mConnectionState, returnText;
+    protected Button buttonSend;
+    protected ImageView infoButton;
+
+    protected BluetoothLeService mBluetoothLeService;
+    protected BluetoothGattCharacteristic characteristicTX, characteristicRX;
+    protected boolean mConnected = false, characteristicReady = false;
+
+    protected StringBuilder msgBuffer;
 
     // Code to manage Service lifecycle.
-    private final ServiceConnection mServiceConnection = new ServiceConnection() {
+    protected final ServiceConnection mServiceConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder service) {
@@ -60,7 +66,7 @@ public class UploadStringActivity extends Activity {
                 finish();
             }
             // Automatically connects to the device upon successful start-up initialization.
-            mBluetoothLeService.connect(mDeviceAddress);
+            mBluetoothLeService.connect(currDeviceAddress);
         }
 
         @Override
@@ -75,7 +81,7 @@ public class UploadStringActivity extends Activity {
     // ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.
     // ACTION_DATA_AVAILABLE: received data from the device.  This can be a result of read
     //                        or notification operations.
-    private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
+    protected final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
@@ -90,13 +96,13 @@ public class UploadStringActivity extends Activity {
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 BluetoothGattService gattService = mBluetoothLeService.getSoftSerialService();
                 if (gattService == null) {
-                    Toast.makeText(UploadStringActivity.this, getString(R.string.without_service), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AbstractBleControlActivity.this, getString(R.string.without_service), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if (mDeviceName.startsWith("Microduino")) {
+                if (currDeviceName.startsWith("Microduino")) {
                     characteristicTX = gattService.getCharacteristic(BluetoothLeService.UUID_MD_RX_TX);
-                } else if (mDeviceName.startsWith("EtOH")) {
+                } else if (currDeviceName.startsWith("EtOH")) {
                     characteristicTX = gattService.getCharacteristic(BluetoothLeService.UUID_ETOH_RX_TX);
                 }
                 characteristicRX = characteristicTX;
@@ -116,7 +122,7 @@ public class UploadStringActivity extends Activity {
         }
     };
 
-    private static IntentFilter makeGattUpdateIntentFilter() {
+    protected static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
@@ -125,31 +131,38 @@ public class UploadStringActivity extends Activity {
         return intentFilter;
     }
 
+    protected View.OnClickListener onClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if (v == buttonSend) {
+                msgBuffer = new StringBuilder();
+                msgBuffer.append("Message send to BLE device"); // TODO change message
+
+                UploadAsyncTask asyncTask = new UploadAsyncTask();
+                asyncTask.execute();
+            }
+        }
+    };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upload_string);
+        setContentView(R.layout.activity_upload_matrix);
+
+        activity = this;
 
         final Intent intent = getIntent();
-        mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
-        mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
+        currDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
+        currDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
         // Sets up UI references.
         mConnectionState = (TextView) findViewById(R.id.connection_state);
         // is serial present?
         isSerial = (TextView) findViewById(R.id.isSerial);
 
-        editMsg = (EditText) findViewById(R.id.editMessage);
+        returnText = (TextView) findViewById(R.id.textReturn);
+        buttonSend = (Button) findViewById(R.id.sendButton);
 
-        sendButton = (Button) findViewById(R.id.sendButton);
-        sendButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                UploadAsyncTask asyncTask = new UploadAsyncTask();
-                asyncTask.execute();
-            }
-        });
+        buttonSend.setOnClickListener(onClickListener);
 
         infoButton = (ImageView) findViewById(R.id.infoImage);
         infoButton.setOnClickListener(new View.OnClickListener() {
@@ -160,7 +173,7 @@ public class UploadStringActivity extends Activity {
             }
         });
 
-        getActionBar().setTitle(getString(R.string.title_text));
+        getActionBar().setTitle(currDeviceName);
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
@@ -173,7 +186,7 @@ public class UploadStringActivity extends Activity {
 
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
         if (mBluetoothLeService != null) {
-            final boolean result = mBluetoothLeService.connect(mDeviceAddress);
+            final boolean result = mBluetoothLeService.connect(currDeviceAddress);
             Log.d(TAG, "Connect request result=" + result);
         }
     }
@@ -209,7 +222,7 @@ public class UploadStringActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_connect:
-                mBluetoothLeService.connect(mDeviceAddress);
+                mBluetoothLeService.connect(currDeviceAddress);
                 return true;
             case R.id.menu_disconnect:
                 mBluetoothLeService.disconnect();
@@ -221,7 +234,7 @@ public class UploadStringActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void updateConnectionState(final int resourceId) {
+    protected void updateConnectionState(final int resourceId) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -230,23 +243,22 @@ public class UploadStringActivity extends Activity {
         });
     }
 
-    private void updateReadyState(final int resourceId) {
+    protected void updateReadyState(final int resourceId) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                // wait_ble(1000);
                 characteristicReady = true;
-                sendButton.setEnabled(characteristicReady);
+                buttonSend.setEnabled(characteristicReady);
 
-                Toast.makeText(UploadStringActivity.this, getString(resourceId), Toast.LENGTH_SHORT).show();
+                Toast.makeText(AbstractBleControlActivity.this, getString(resourceId), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void displayData(String data) {
+    protected void displayData(String data) {
         if (data != null) {
-            //You can add some code here
             Log.v(TAG, "BLE Return Data : " + data);
+            returnText.setText(data);
         }
     }
 
@@ -258,16 +270,23 @@ public class UploadStringActivity extends Activity {
         }
     }
 
-    private void sendMessage(String msg) {
+    protected int getMsgBufferLen() {
+        return BLE_MSG_BUFFER_LEN;
+    }
+
+    protected void sendMessage(String msg) {
         int msglen = msg.length();
+        Log.v(TAG, "sendMsg msg= " + msg);
+
+        int msgBufferLen = getMsgBufferLen();
 
         if (characteristicReady && (mBluetoothLeService != null)
                 && (characteristicTX != null) && (characteristicRX != null)) {
             mBluetoothLeService.setCharacteristicNotification(characteristicRX, true);
 
             String tmp;
-            for (int offset = 0; offset < msglen; offset += BLE_MSG_BUFFER_LEN) {
-                tmp = msg.substring(offset, Math.min(offset + BLE_MSG_BUFFER_LEN, msglen));
+            for (int offset = 0; offset < msglen; offset += msgBufferLen) {
+                tmp = msg.substring(offset, Math.min(offset + msgBufferLen, msglen));
                 Log.v(TAG, "sendMsg tmp= " + tmp);
 
                 characteristicTX.setValue(tmp);
@@ -275,11 +294,11 @@ public class UploadStringActivity extends Activity {
                 wait_ble(BLE_MSG_SEND_INTERVAL);
             }
         } else {
-            Toast.makeText(UploadStringActivity.this, getString(R.string.disconnected), Toast.LENGTH_SHORT).show();
+            Toast.makeText(AbstractBleControlActivity.this, getString(R.string.disconnected), Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void iascDialog() {
+    protected void iascDialog() {
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.iasc_dialog,
                 (ViewGroup) findViewById(R.id.dialog));
@@ -287,20 +306,24 @@ public class UploadStringActivity extends Activity {
                 .setPositiveButton("OK", null).show();
     }
 
+    public void toastMessage(String msg) {
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+    }
+
     public class UploadAsyncTask extends AsyncTask<Integer, Integer, String> {
 
         @Override
         protected String doInBackground(Integer... params) {
             if (characteristicReady) {
-                String msgText = editMsg.getText().toString();
-                sendMessage("M:" + msgText + "\n");
+                sendMessage(msgBuffer.toString());
+                wait_ble(BLE_MSG_SEND_INTERVAL);
             }
             return "Done";
         }
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(UploadStringActivity.this, getString(R.string.done), Toast.LENGTH_SHORT).show();
+            Toast.makeText(AbstractBleControlActivity.this, getString(R.string.done), Toast.LENGTH_SHORT).show();
         }
     }
 }

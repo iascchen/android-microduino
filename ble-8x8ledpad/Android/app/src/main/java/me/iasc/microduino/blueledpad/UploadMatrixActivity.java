@@ -18,15 +18,12 @@ package me.iasc.microduino.blueledpad;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattService;
-import android.content.*;
-import android.os.AsyncTask;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.*;
+import android.view.View;
 import android.widget.*;
 import me.iasc.microduino.blueledpad.ble.BluetoothLeService;
 import me.iasc.microduino.blueledpad.db.LedMatrixDAO;
@@ -35,20 +32,13 @@ import me.iasc.microduino.blueledpad.db.LedMatrixModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UploadMatrixActivity extends Activity {
+public class UploadMatrixActivity extends AbstractBleControlActivity {
     private final static String TAG = UploadMatrixActivity.class.getSimpleName();
 
-    public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
-    public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     public static final String EXTRAS_LED_MATRIX = "LED_MATRIX";
-
-    public static int BLE_MSG_SEND_INTERVAL = 100;
-    public static int BLE_MSG_BUFFER_LEN = 18;
 
     public static final int MATRIX_N = 8;
     public static final int MATRIX_NN = MATRIX_N * MATRIX_N;
-
-    private String currDeviceName, currDeviceAddress;
 
     LedMatrixModel currMatrix;
     LedMatrixDAO mtxDAO = null;
@@ -60,91 +50,9 @@ public class UploadMatrixActivity extends Activity {
     int currColorIndex = 1;
     boolean drawMode = false;
 
-    private Button buttonSend, buttonSave, buttonDelete;
-    private TextView isSerial, mConnectionState, returnText;
+    private Button buttonSave, buttonDelete;
     private EditText editNameInDialog;
-    private ImageView infoButton;
     private Switch switchDraw;
-
-    private BluetoothLeService mBluetoothLeService;
-    private BluetoothGattCharacteristic characteristicTX, characteristicRX;
-    private boolean mConnected = false, characteristicReady = false;
-
-    // Code to manage Service lifecycle.
-    private final ServiceConnection mServiceConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder service) {
-            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
-            if (!mBluetoothLeService.initialize()) {
-                Log.e(TAG, "Unable to initialize Bluetooth");
-                finish();
-            }
-            // Automatically connects to the device upon successful start-up initialization.
-            mBluetoothLeService.connect(currDeviceAddress);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-            mBluetoothLeService = null;
-        }
-    };
-
-    // Handles various events fired by the Service.
-    // ACTION_GATT_CONNECTED: connected to a GATT server.
-    // ACTION_GATT_DISCONNECTED: disconnected from a GATT server.
-    // ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.
-    // ACTION_DATA_AVAILABLE: received data from the device.  This can be a result of read
-    //                        or notification operations.
-    private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
-            if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
-                mConnected = true;
-                updateConnectionState(R.string.connected);
-                invalidateOptionsMenu();
-            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
-                mConnected = false;
-                updateConnectionState(R.string.disconnected);
-                invalidateOptionsMenu();
-            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
-                BluetoothGattService gattService = mBluetoothLeService.getSoftSerialService();
-                if (gattService == null) {
-                    Toast.makeText(UploadMatrixActivity.this, getString(R.string.without_service), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (currDeviceName.startsWith("Microduino")) {
-                    characteristicTX = gattService.getCharacteristic(BluetoothLeService.UUID_MD_RX_TX);
-                } else if (currDeviceName.startsWith("EtOH")) {
-                    characteristicTX = gattService.getCharacteristic(BluetoothLeService.UUID_ETOH_RX_TX);
-                }
-                characteristicRX = characteristicTX;
-
-                if (characteristicTX != null) {
-                    mBluetoothLeService.setCharacteristicNotification(characteristicTX, true);
-
-                    isSerial.setText("Serial ready");
-                    updateReadyState(R.string.ready);
-                } else {
-                    isSerial.setText("Serial can't be found");
-                }
-
-            } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-                displayData(intent.getStringExtra(mBluetoothLeService.EXTRA_DATA));
-            }
-        }
-    };
-
-    private static IntentFilter makeGattUpdateIntentFilter() {
-        final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
-        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
-        return intentFilter;
-    }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
         public void onClick(View v) {
@@ -160,6 +68,9 @@ public class UploadMatrixActivity extends Activity {
                 }
             } else if (v == buttonSend) {
                 updateMatrixInfo(currMatrix);
+
+                msgBuffer = new StringBuilder("B:");
+                msgBuffer.append(currMatrix.getMatrix()).append("\n");
 
                 UploadAsyncTask asyncTask = new UploadAsyncTask();
                 asyncTask.execute();
@@ -214,9 +125,6 @@ public class UploadMatrixActivity extends Activity {
         mtxDAO = new LedMatrixDAO(this);
 
         final Intent intent = getIntent();
-        currDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
-        currDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
-
         currMatrix = intent.getParcelableExtra(EXTRAS_LED_MATRIX);
         if (currMatrix == null) {
             currMatrix = mtxDAO.getDummyLedMatrix();
@@ -308,70 +216,7 @@ public class UploadMatrixActivity extends Activity {
         toastMessage(getString(R.string.opt_info));
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-        if (mBluetoothLeService != null) {
-            final boolean result = mBluetoothLeService.connect(currDeviceAddress);
-            Log.d(TAG, "Connect request result=" + result);
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        unregisterReceiver(mGattUpdateReceiver);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unbindService(mServiceConnection);
-        mBluetoothLeService = null;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.gatt_services, menu);
-        if (mConnected) {
-            menu.findItem(R.id.menu_connect).setVisible(false);
-            menu.findItem(R.id.menu_disconnect).setVisible(true);
-        } else {
-            menu.findItem(R.id.menu_connect).setVisible(true);
-            menu.findItem(R.id.menu_disconnect).setVisible(false);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_connect:
-                mBluetoothLeService.connect(currDeviceAddress);
-                return true;
-            case R.id.menu_disconnect:
-                mBluetoothLeService.disconnect();
-                return true;
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void updateConnectionState(final int resourceId) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mConnectionState.setText(resourceId);
-            }
-        });
-    }
-
-    private void updateReadyState(final int resourceId) {
+    protected void updateReadyState(final int resourceId) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -379,63 +224,14 @@ public class UploadMatrixActivity extends Activity {
                 buttonSend.setEnabled(characteristicReady);
                 switchDraw.setEnabled(characteristicReady);
 
-                Toast.makeText(UploadMatrixActivity.this, getString(resourceId), Toast.LENGTH_SHORT).show();
+                toastMessage(getString(resourceId));
             }
         });
-    }
-
-    private void displayData(String data) {
-        if (data != null) {
-            Log.v(TAG, "BLE Return Data : " + data);
-            returnText.setText(data);
-        }
-    }
-
-    public void wait_ble(int i) {
-        try {
-            Thread.sleep(i);
-        } catch (Exception e) {
-            // ignore
-        }
-    }
-
-    private void sendMessage(String msg) {
-        int msglen = msg.length();
-        Log.v(TAG, "sendMsg msg= " + msg);
-
-        if (characteristicReady && (mBluetoothLeService != null)
-                && (characteristicTX != null) && (characteristicRX != null)) {
-            mBluetoothLeService.setCharacteristicNotification(characteristicRX, true);
-
-            String tmp;
-            for (int offset = 0; offset < msglen; offset += BLE_MSG_BUFFER_LEN) {
-                tmp = msg.substring(offset, Math.min(offset + BLE_MSG_BUFFER_LEN, msglen));
-                Log.v(TAG, "sendMsg tmp= " + tmp);
-
-                characteristicTX.setValue(tmp);
-                mBluetoothLeService.writeCharacteristic(characteristicTX);
-                wait_ble(BLE_MSG_SEND_INTERVAL);
-            }
-        } else {
-            Toast.makeText(UploadMatrixActivity.this, getString(R.string.disconnected), Toast.LENGTH_SHORT).show();
-        }
     }
 
     public void sendLedColor(LedButton btn) {
         int index = ledButtons.indexOf(btn);
         sendMessage("L:" + (index / MATRIX_N) + "," + (index % MATRIX_N) + "," + btn.getColorIndex() + "\n");
-    }
-
-    private void iascDialog() {
-        LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.iasc_dialog,
-                (ViewGroup) findViewById(R.id.dialog));
-        new AlertDialog.Builder(this).setView(layout)
-                .setPositiveButton("OK", null).show();
-    }
-
-    public void toastMessage(String msg) {
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
     }
 
     public void updateMatrixInfo(LedMatrixModel mtx) {
@@ -516,22 +312,5 @@ public class UploadMatrixActivity extends Activity {
             }
         });
         builder.create().show();
-    }
-
-    public class UploadAsyncTask extends AsyncTask<Integer, Integer, String> {
-
-        @Override
-        protected String doInBackground(Integer... params) {
-            if (characteristicReady) {
-                sendMessage("B:" + currMatrix.getMatrix() + "\n");
-                wait_ble(BLE_MSG_SEND_INTERVAL);
-            }
-            return "Done";
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            Toast.makeText(UploadMatrixActivity.this, getString(R.string.done), Toast.LENGTH_SHORT).show();
-        }
     }
 }
