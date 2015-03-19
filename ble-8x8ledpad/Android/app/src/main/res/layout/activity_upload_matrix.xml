@@ -56,7 +56,7 @@
             android:layout_height="wrap_content" android:columnCount="8" android:rowCount="8"
             android:layout_below="@+id/switchDraw"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:id="@+id/gridLayout"
             android:background="@android:color/darker_gray">
     </GridLayout>
@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/deleteButton"
             android:text="@string/delete"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:textStyle="bold"
             android:textColor="@android:color/holo_red_dark"
             android:layout_below="@+id/gridLayout"
@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:text="@string/menu_upload"
             android:id="@+id/sendButton"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:enabled="false"
             android:textStyle="bold"
             android:layout_below="@+id/saveButton"
@@ -102,6 +102,6 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_below="@+id/deleteButton"
-              android:layout_marginTop="20dp"
+              android:layout_marginTop="10dp"
               android:textStyle="bold" android:lines="1"/>
 </RelativeLayout>

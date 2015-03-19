@@ -49,6 +49,62 @@
             android:id="@+id/editMessage" android:layout_below="@+id/connection_state" android:lines="3"
             android:text="Welcome to Microduino!"/>
 
+    <!--Color-->
+    <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_below="@+id/editMessage"
+            android:layout_marginTop="10dp"
+            android:id="@+id/radioGroupColor"
+            android:layout_alignStart="@+id/editMessage" android:orientation="horizontal"
+            android:gravity="center_horizontal">
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rButtonRed"
+                android:background="#ffff0000" android:checked="true"/>
+
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rButtonYellow" android:layout_marginLeft="60dp"
+                android:background="#ffffff00"/>
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rButtonGreen"
+                android:background="#ff00ff00" android:layout_marginLeft="60dp"/>
+    </RadioGroup>
+
+    <!--Direction-->
+    <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_below="@+id/radioGroupColor"
+            android:layout_marginTop="10dp"
+            android:id="@+id/radioGroupDirection"
+            android:layout_alignStart="@+id/radioGroupColor" android:orientation="horizontal"
+            android:gravity="center_horizontal">
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rButtonLeft"
+                android:text="⬅️" android:checked="true"/>
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rButtonUp" android:layout_marginLeft="20dp"
+                android:text="⬆️"/>
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rButtonRight"  android:layout_marginLeft="20dp"
+                android:text="➡️"/>
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rButtonDown"  android:layout_marginLeft="20dp"
+                android:text="⬇️"/>
+    </RadioGroup>
+
     <Button
             android:layout_width="240dp"
             android:layout_height="wrap_content"
@@ -56,9 +112,9 @@
             android:layout_gravity="center_horizontal"
             android:checked="false"
             android:text="@string/menu_upload"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:textStyle="bold" android:enabled="false"
-            android:layout_below="@+id/editMessage" android:layout_centerHorizontal="true"/>
+            android:layout_below="@+id/radioGroupDirection" android:layout_centerHorizontal="true"/>
 
     <ImageView
             android:layout_width="wrap_content"

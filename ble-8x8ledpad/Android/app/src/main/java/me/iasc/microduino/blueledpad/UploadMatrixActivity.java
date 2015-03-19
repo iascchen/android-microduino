@@ -140,7 +140,7 @@ public class UploadMatrixActivity extends AbstractBleControlActivity {
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        int btnWidth = (displaymetrics.widthPixels - 50) / MATRIX_N - 1;
+        int btnWidth = (displaymetrics.widthPixels - 50) / MATRIX_N - 4;
         Log.v(TAG, "btnWidth = " + btnWidth);
 
         char _c;

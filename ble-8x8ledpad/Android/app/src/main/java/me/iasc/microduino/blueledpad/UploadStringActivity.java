@@ -18,11 +18,9 @@ package me.iasc.microduino.blueledpad;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 import me.iasc.microduino.blueledpad.ble.BluetoothLeService;
 
 public class UploadStringActivity extends AbstractBleControlActivity {
@@ -30,6 +28,14 @@ public class UploadStringActivity extends AbstractBleControlActivity {
 
     public static int BLE_MSG_BUFFER_LEN = 8;
     private EditText editMsg;
+
+    private RadioGroup rgColor, rgDirection;
+    private RadioButton rButtonRed, rButtonYellow, rButtonGreen, rButtonLeft, rButtonUp, rButtonRight, rButtonDown;
+
+    public static int COLOR_RED = 1, COLOR_YELLOW = 2, COLOR_GREEN = 3;
+    public static int DIRECTION_LEFT = 0, DIRECTION_UP = 1, DIRECTION_RIGHT = 2, DIRECTION_DOWN = 3;
+
+    int colorIndex = 0, directionIndex = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,13 +49,62 @@ public class UploadStringActivity extends AbstractBleControlActivity {
 
         editMsg = (EditText) findViewById(R.id.editMessage);
 
+        rgColor = (RadioGroup) findViewById(R.id.radioGroupColor);
+        rButtonRed = (RadioButton) rgColor.findViewById(R.id.rButtonRed);
+        rButtonYellow = (RadioButton) rgColor.findViewById(R.id.rButtonYellow);
+        rButtonGreen = (RadioButton) rgColor.findViewById(R.id.rButtonGreen);
+
+        rgDirection = (RadioGroup) findViewById(R.id.radioGroupDirection);
+        rButtonLeft = (RadioButton) rgDirection.findViewById(R.id.rButtonLeft);
+        rButtonUp = (RadioButton) rgDirection.findViewById(R.id.rButtonUp);
+        rButtonRight = (RadioButton) rgDirection.findViewById(R.id.rButtonRight);
+        rButtonDown = (RadioButton) rgDirection.findViewById(R.id.rButtonDown);
+
+        rgColor.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup rg, int arg1) {
+                int radioButtonId = rg.getCheckedRadioButtonId();
+                RadioButton rb = (RadioButton) rg.findViewById(radioButtonId);
+
+                if (rButtonYellow == rb) {
+                    colorIndex = COLOR_YELLOW;
+                } else if (rButtonGreen == rb) {
+                    colorIndex = COLOR_GREEN;
+                } else {
+                    colorIndex = COLOR_RED;
+                }
+            }
+        });
+
+        rgDirection.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup rg, int arg1) {
+                int radioButtonId = rg.getCheckedRadioButtonId();
+                RadioButton rb = (RadioButton) rg.findViewById(radioButtonId);
+
+                if (rButtonUp == rb) {
+                    directionIndex = DIRECTION_UP;
+                } else if (rButtonRight == rb) {
+                    directionIndex = DIRECTION_RIGHT;
+                } else if (rButtonDown == rb) {
+                    directionIndex = DIRECTION_DOWN;
+                } else {
+                    directionIndex = DIRECTION_LEFT;
+                }
+            }
+        });
+
         buttonSend = (Button) findViewById(R.id.sendButton);
         buttonSend.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 msgBuffer = new StringBuilder("M:");
+                msgBuffer.append(colorIndex).append(",");
+                msgBuffer.append(directionIndex).append(",");
                 msgBuffer.append(editMsg.getText()).append("\n");
+
+                Log.v(TAG, "message = " + msgBuffer.toString());
 
                 UploadAsyncTask asyncTask = new UploadAsyncTask();
                 asyncTask.execute();

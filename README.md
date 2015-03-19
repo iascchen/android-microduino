@@ -66,22 +66,34 @@ Tested on Android 4.4(Sony Xperia).
 
 Home page is select BLE device. 
 
-![](ble-voice/docs/ledpad-1.png)
+![](ble-8x8ledpad/docs/ledpad-1.png)
 
 List of LED matrix
 
-![](ble-voice/docs/ledpad-2.png)
+![](ble-8x8ledpad/docs/ledpad-2.png)
 
 Click first item "Text", You can upload text message.
 
-![](ble-voice/docs/ledpad-3.png)
+![](ble-8x8ledpad/docs/ledpad-12.png)
+![](ble-8x8ledpad/docs/ledpad-3.png)
 
 Click "NEW" button on the top-right conner, create new matrix.
 
-You can draw something by cilck the led matrix on screen. If you want to clean the button, just click again. Long press will change color. There are 3 colors : Red, Yellow, Green.
+![](ble-8x8ledpad/docs/ledpad-10.png)
+![](ble-8x8ledpad/docs/ledpad-4.png)
 
-On the top-right cornor you can find a switch to change draw mode. If the switch is ON, the changes on phone screen will send to LED Pad one by one. If the switch is OFF, you need press the "Upload" button to refresh LEDPad 
+You can draw something by **CLICK** the led matrix on screen. If you want to clean the button, just **CLICK AGAIN**. **LONG PRESS** will change color. There are 3 colors : Red, Yellow, Green.
+
+On the top-right cornor you can find a switch to change draw mode. If the switch is **Draw**, the changes on phone screen will send to LED Pad one by one. If the switch is **OFF**, you need press the "Upload" button to refresh LEDPad. 
+
+![](ble-8x8ledpad/docs/ledpad-5.png)
+![](ble-8x8ledpad/docs/ledpad-6.png)
 
 You can save or delete a matrix.
 
+![](ble-8x8ledpad/docs/ledpad-7.png)
+![](ble-8x8ledpad/docs/ledpad-8.png)
+
 If you want to reset all matrix to factory setting, please select meanu "Reset Matrix Set". 
+
+![](ble-8x8ledpad/docs/ledpad-9.png)
