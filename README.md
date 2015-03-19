@@ -97,3 +97,31 @@ You can save or delete a matrix.
 If you want to reset all matrix to factory setting, please select meanu "Reset Matrix Set". 
 
 ![](ble-8x8ledpad/docs/ledpad-9.png)
+
+### LEDPad Control Protocol
+
+Send text message
+
+	// <color index> value is in [1,2,3], means [Red, Yellow, Green]
+	// <direction index> value is in [0,1,2,3], means [Left, Up, Right, Down]
+	// <message> is text string.
+
+	M:<color index>,<direction index>,<message>\n
+	
+	M:2,0,Welcome to Microduino!\n   // Yellow text "Welcome to Microduino!", scroll from Left to Right
+	
+Send color matrix
+
+	// 64 charactors <color index> for each LED on 8x8 LEDPad
+	
+	B:<color index matrix>\n
+	
+	B:0011110001000010103003011000000110200201100220010100001000111100\n		// Smile Face
+	
+Change color of a led
+
+	// <row>, <column> is the postion, value is in [0-7] 
+	
+	L:<row>,<column>,<color index>\n
+	
+	L:2,7,3\n		// On the 3rd row, 8th column, set Green Color
