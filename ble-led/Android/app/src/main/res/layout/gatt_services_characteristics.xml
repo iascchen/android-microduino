@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+/*
+ * Copyright (C) 2015 Iasc CHEN
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:fab="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_margin="10dp"
+              android:gravity="center">
+
+    <RelativeLayout android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="40dp">
+        <TextView android:id="@+id/connection_state"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/disconnected"
+                  android:textSize="18sp" android:layout_alignParentLeft="true" android:textStyle="italic"/>
+        <TextView android:id="@+id/isSerial"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/is_serial"
+                  android:textSize="18sp"
+                  android:layout_alignParentRight="true" android:textStyle="italic"/>
+    </RelativeLayout>
+
+    <Switch android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/switchSingleMulti"
+            android:textOff="@string/single_color"
+            android:textOn="@string/multi_colors"
+            android:checked="false"
+            android:layout_gravity="right" android:textStyle="bold"/>
+
+    <me.iasc.microduino.bluelight.colorpicker.MultiColorPicker
+            android:id="@+id/multiColorPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="0.8"
+            android:visibility="gone"/>
+
+    <me.iasc.microduino.bluelight.colorpicker.ColorPicker
+            android:id="@+id/colorPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="0.8" />
+
+    <RelativeLayout android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="40dp">
+
+        <ToggleButton
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/toggleButton"
+                android:layout_gravity="center_horizontal"
+                android:checked="false" android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
+                android:textStyle="bold"/>
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/infoImage"
+                android:background="@drawable/gu_info" android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"/>
+
+        <com.getbase.floatingactionbutton.FloatingActionsMenu
+                android:id="@+id/multiple_actions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_addButtonColorNormal="@color/pink"
+                fab:fab_addButtonColorPressed="@color/pink_pressed"
+                fab:fab_addButtonPlusIconColor="@color/half_black"
+                fab:fab_addButtonStrokeVisible="false"
+                fab:fab_addButtonSize="mini"
+                fab:fab_expandDirection="right"
+                android:layout_alignTop="@+id/toggleButton" android:layout_alignParentStart="true">
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/buttonWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    fab:fab_icon="@drawable/light"
+                    fab:fab_colorNormal="@color/white"
+                    fab:fab_colorPressed="@color/white_pressed"
+                    fab:fab_size="mini"/>
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/buttonSun"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    fab:fab_icon="@drawable/light"
+                    fab:fab_colorNormal="#ffffdd6e"
+                    fab:fab_colorPressed="#ffffdd6e"
+                    fab:fab_size="mini"/>
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/buttonMusic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    fab:fab_icon="@drawable/music"
+                    fab:fab_colorNormal="@color/blue_semi_transparent"
+                    fab:fab_colorPressed="@color/blue_semi_transparent_pressed"
+                    fab:fab_size="mini"/>
+
+            <!--
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/buttonPic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    fab:fab_icon="@drawable/pic"
+                    fab:fab_colorNormal="@color/blue_semi_transparent"
+                    fab:fab_colorPressed="@color/blue_semi_transparent_pressed"
+                    fab:fab_size="mini"/>
+                    -->
+
+        </com.getbase.floatingactionbutton.FloatingActionsMenu>
+    </RelativeLayout>
+</LinearLayout>
