@@ -143,10 +143,11 @@ public abstract class AbstractBleControlActivity extends Activity {
         }
     };
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        // setContentView(R.layout.activity_upload_matrix);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upload_matrix);
 
         activity = this;
 
@@ -298,6 +299,30 @@ public abstract class AbstractBleControlActivity extends Activity {
         }
     }
 
+    protected void sendMessage(byte[] msgBytes, int bufferLen) {
+        int msglen = msgBytes.length;
+        Log.v(TAG, "sendMsg msgByteLen= " + msglen);
+
+        byte[] buffer = new byte[bufferLen];
+
+        if (characteristicReady && (mBluetoothLeService != null)
+                && (characteristicTX != null) && (characteristicRX != null)) {
+            mBluetoothLeService.setCharacteristicNotification(characteristicRX, true);
+
+            for (int offset = 0; offset < msglen; offset += bufferLen) {
+                System.arraycopy(msgBytes, offset, buffer, 0, Math.min( bufferLen, msglen - offset));
+
+                Log.v(TAG, "sendMsg buffer= " + buffer);
+
+                characteristicTX.setValue(buffer);
+                mBluetoothLeService.writeCharacteristic(characteristicTX);
+                wait_ble(BLE_MSG_SEND_INTERVAL);
+            }
+        } else {
+            Toast.makeText(AbstractBleControlActivity.this, getString(R.string.disconnected), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     protected void iascDialog() {
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.iasc_dialog,
@@ -315,7 +340,7 @@ public abstract class AbstractBleControlActivity extends Activity {
         @Override
         protected String doInBackground(Integer... params) {
             if (characteristicReady) {
-                sendMessage(msgBuffer.toString());
+                sendMessage(msgBuffer.toString().getBytes(), BLE_MSG_BUFFER_LEN);
                 wait_ble(BLE_MSG_SEND_INTERVAL);
             }
             return "Done";

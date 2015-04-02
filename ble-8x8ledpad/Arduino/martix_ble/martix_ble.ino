@@ -23,6 +23,8 @@ void setup() {
   my_serial.begin(9600);
   Serial.begin(9600);
   matrix.begin(0x70);
+  matrix.clear();
+  delay(100);
 }
 
 void loop() {
@@ -34,7 +36,7 @@ void loop() {
       draw();
   }
   if(msg[0]=='M')
-    text(random(1, 3));
+    text();
 }
 
 void image()
@@ -82,15 +84,21 @@ void image()
    */
 }
 
-void text(int color)
+void text()
 {
   int time=150;
-  String msg_display=msg.substring(2,msg.length());
+  String msg_display=msg.substring(6,msg.length());
   int longnum=msg_display.length();
+
+  int color =msg.charAt(2)-48;
+  int c =msg.charAt(4)-48;
+
   matrix.setTextSize(1);
   matrix.setTextWrap(false);
-  matrix.setRotation(0);
-  for (int8_t x=0; x>=-longnum*6-8; x--) {
+  //0:R-L  1:D-U  2:L-R  3:U-D
+  matrix.setRotation(c);
+  for (int8_t x=0; x>=-longnum*6-8; x--) 
+  {
     matrix.clear();
     switch (color)
     {
@@ -98,10 +106,10 @@ void text(int color)
       matrix.setTextColor(LED_RED);
       break;
     case 2:  
-      matrix.setTextColor(LED_GREEN);
+      matrix.setTextColor(LED_YELLOW);
       break;
     case 3:  
-      matrix.setTextColor(LED_YELLOW);
+      matrix.setTextColor(LED_GREEN);
       break;
     default:
       matrix.setTextColor(LED_RED);
@@ -134,7 +142,7 @@ void draw()
   if(color==0)
     matrix.drawPixel(x, y, LED_OFF); 
   else if(color==1)
-    matrix.drawPixel(x, y, LED_RED);  
+    matrix.drawPixel(x, y, LED_RED); 
   else if(color==2)
     matrix.drawPixel(x, y, LED_YELLOW);  
   else if(color==3)
@@ -142,3 +150,4 @@ void draw()
 
   matrix.writeDisplay();
 }
+

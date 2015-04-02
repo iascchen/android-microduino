@@ -117,8 +117,9 @@ public class UploadMatrixActivity extends AbstractBleControlActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_matrix);
+
+        super.onCreate(savedInstanceState);
 
         activity = this;
 

@@ -39,8 +39,9 @@ public class UploadStringActivity extends AbstractBleControlActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_string);
+
+        super.onCreate(savedInstanceState);
 
         // Sets up UI references.
         mConnectionState = (TextView) findViewById(R.id.connection_state);
