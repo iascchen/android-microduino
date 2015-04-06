@@ -105,7 +105,7 @@ public class RecordManager {
      * Log.i("mic_", "麦克风的基准值：" + mMediaRecorder.getMaxAmplitude());前提时不对麦克风说任何话
      */
     private int BASE = 600;
-    private int SAMPLE_INTERVAL = 200;// 间隔取样时间
+    private int SAMPLE_INTERVAL = 220;// 间隔取样时间
 
     public double updateMicStatus(Runnable timerRun) {
         double ret = 0;

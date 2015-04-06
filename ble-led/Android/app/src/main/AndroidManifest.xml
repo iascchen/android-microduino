@@ -19,11 +19,7 @@
 
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="me.iasc.microduino.bluelight"
-          android:versionName="2.0" >
-
-    <uses-sdk android:minSdkVersion="18"
-              android:targetSdkVersion="20"/>
+    package="me.iasc.microduino.bluelight" >
 
     <!-- Declare this required feature if you want to make the app available to BLE-capable
     devices only.  If you want to make your app available to devices that don't support BLE,

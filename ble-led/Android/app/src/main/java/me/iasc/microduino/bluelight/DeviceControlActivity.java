@@ -61,6 +61,8 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
             double voice = recorder.updateMicStatus(this);
             Log.v(TAG, "voice：" + voice);
             makeChange(changeLightness(voice));
+            wait_ble(BLE_MSG_SEND_INTERVAL);
+            makeChange(0);
         }
     };
 
@@ -140,6 +142,11 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
         findViewById(R.id.buttonSun).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if( isRecording && recorder != null){
+                    recorder.stopRecord();
+                    isRecording = false;
+                }
+
                 onButton.setChecked(true);
                 setSingleColor(COLOR_SUN);
             }
@@ -148,6 +155,11 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
         findViewById(R.id.buttonWhite).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if( isRecording && recorder != null){
+                    recorder.stopRecord();
+                    isRecording = false;
+                }
+
                 onButton.setChecked(true);
                 setSingleColor(COLOR_WHITE);
             }
@@ -199,8 +211,9 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
     }
 
     protected void onDestroy() {
-        if( isRecording && recorder != null)
+        if( isRecording && recorder != null){
             recorder.stopRecord();
+        }
 
         super.onDestroy();
     }
