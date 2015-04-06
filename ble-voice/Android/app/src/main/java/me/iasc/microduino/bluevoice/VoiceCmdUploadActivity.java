@@ -299,7 +299,6 @@ public class VoiceCmdUploadActivity extends Activity {
 
         if (characteristicReady && (mBluetoothLeService != null)
                 && (characteristicTX != null) && (characteristicRX != null)) {
-            mBluetoothLeService.setCharacteristicNotification(characteristicRX, true);
 
             for (int offset = 0; offset < msglen; offset += BLE_MSG_BUFFER_LEN) {
                 characteristicTX.setValue(msg.substring(offset, Math.min(offset + BLE_MSG_BUFFER_LEN, msglen)));

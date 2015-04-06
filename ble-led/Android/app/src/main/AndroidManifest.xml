@@ -19,7 +19,8 @@
 
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="me.iasc.microduino.bluelight" >
+    package="me.iasc.microduino.bluelight"
+          android:versionName="2.0" >
 
     <uses-sdk android:minSdkVersion="18"
               android:targetSdkVersion="20"/>

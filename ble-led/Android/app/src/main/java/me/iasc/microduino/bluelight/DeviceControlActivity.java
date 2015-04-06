@@ -26,6 +26,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.ToggleButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import me.iasc.microduino.bluelight.ble.BluetoothLeService;
 import me.iasc.microduino.bluelight.colorpicker.ColorPicker;
 import me.iasc.microduino.bluelight.colorpicker.MultiColorPicker;
 
@@ -41,7 +42,7 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
     public static int COLOR_WHITE = Color.WHITE;
     public static int COLOR_SUN = Color.parseColor("#ffffdd6e");
 
-    public static final int MAX_DB = 60;
+    public static final int MAX_DB = 100;
 
     private MultiColorPicker multiColorPicker;
     private ColorPicker singleColorPicker;
@@ -169,20 +170,39 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
         findViewById(R.id.buttonMusic).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (! isRecording) {
+                if (!isRecording) {
                     recorder.startRecord();
                     isSerial.setText(R.string.listening);
-                }else {
+                } else {
                     recorder.stopRecord();
                     isSerial.setText(getString(R.string.ready));
 
-                    onButton.setChecked(false);
+                    setSingleColor(singleColorPicker.getColor());
                 }
+
+                onButton.setChecked(true);
+
                 isRecording = !isRecording;
             }
         });
 
         singleMultiColorSwitch.setChecked(false);
+
+        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+
+        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+        if (mBluetoothLeService != null) {
+            final boolean result = mBluetoothLeService.connect(currDeviceAddress);
+            Log.d(TAG, "Connect request result=" + result);
+        }
+    }
+
+    protected void onDestroy() {
+        if( isRecording && recorder != null)
+            recorder.stopRecord();
+
+        super.onDestroy();
     }
 
     protected void updateReadyState(final int resourceId) {
@@ -206,8 +226,8 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
         makeChange(color);
     }
 
-    private int changeLightness(double voice){
-        Color.colorToHSV(singleColorPicker.getColor() , colorHSV);
+    private int changeLightness(double voice) {
+        Color.colorToHSV(singleColorPicker.getColor(), colorHSV);
         colorHSV[2] = (float) Math.min(voice / MAX_DB, 1);
 
         return Color.HSVToColor(colorHSV);

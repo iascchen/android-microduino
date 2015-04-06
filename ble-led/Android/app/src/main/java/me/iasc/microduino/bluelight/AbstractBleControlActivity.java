@@ -21,7 +21,6 @@ import android.app.AlertDialog;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.*;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -154,11 +153,6 @@ public abstract class AbstractBleControlActivity extends Activity {
 
         getActionBar().setTitle(currDeviceName);
         getActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
@@ -171,16 +165,35 @@ public abstract class AbstractBleControlActivity extends Activity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+//        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+//        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+//
+//        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+//        if (mBluetoothLeService != null) {
+//            final boolean result = mBluetoothLeService.connect(currDeviceAddress);
+//            Log.d(TAG, "Connect request result=" + result);
+//        }
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(mGattUpdateReceiver);
-
-        unbindService(mServiceConnection);
-        mBluetoothLeService = null;
+//        unregisterReceiver(mGattUpdateReceiver);
+//
+//        unbindService(mServiceConnection);
+//        mBluetoothLeService = null;
     }
 
     @Override
     protected void onDestroy() {
+        unregisterReceiver(mGattUpdateReceiver);
+
+        unbindService(mServiceConnection);
+        mBluetoothLeService = null;
+
         super.onDestroy();
     }
 
@@ -248,55 +261,15 @@ public abstract class AbstractBleControlActivity extends Activity {
         }
     }
 
-    protected int getMsgBufferLen() {
-        return BLE_MSG_BUFFER_LEN;
-    }
-
     protected void sendMessage(String msg) {
-        int msglen = msg.length();
         Log.v(TAG, "sendMsg msg= " + msg);
 
-        int msgBufferLen = getMsgBufferLen();
-
         if (characteristicReady && (mBluetoothLeService != null)
                 && (characteristicTX != null) && (characteristicRX != null)) {
-            mBluetoothLeService.setCharacteristicNotification(characteristicRX, true);
-
-            String tmp;
-            for (int offset = 0; offset < msglen; offset += msgBufferLen) {
-                tmp = msg.substring(offset, Math.min(offset + msgBufferLen, msglen));
-                Log.v(TAG, "sendMsg tmp= " + tmp);
-
-                characteristicTX.setValue(tmp);
-                mBluetoothLeService.writeCharacteristic(characteristicTX);
-                wait_ble(BLE_MSG_SEND_INTERVAL);
-            }
+            characteristicTX.setValue(msg);
+            mBluetoothLeService.writeCharacteristic(characteristicTX);
         } else {
             toastMessage(getString(R.string.disconnected));
-        }
-    }
-
-    protected void sendMessage(byte[] msgBytes, int bufferLen) {
-        int msglen = msgBytes.length;
-        Log.v(TAG, "sendMsg msgByteLen= " + msglen);
-
-        byte[] buffer = new byte[bufferLen];
-
-        if (characteristicReady && (mBluetoothLeService != null)
-                && (characteristicTX != null) && (characteristicRX != null)) {
-            mBluetoothLeService.setCharacteristicNotification(characteristicRX, true);
-
-            for (int offset = 0; offset < msglen; offset += bufferLen) {
-                System.arraycopy(msgBytes, offset, buffer, 0, Math.min(bufferLen, msglen - offset));
-
-                Log.v(TAG, "sendMsg buffer= " + buffer);
-
-                characteristicTX.setValue(buffer);
-                mBluetoothLeService.writeCharacteristic(characteristicTX);
-                wait_ble(BLE_MSG_SEND_INTERVAL);
-            }
-        } else {
-            // ignore
         }
     }
 
@@ -310,22 +283,5 @@ public abstract class AbstractBleControlActivity extends Activity {
 
     public void toastMessage(String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
-    }
-
-    public class UploadAsyncTask extends AsyncTask<Integer, Integer, String> {
-
-        @Override
-        protected String doInBackground(Integer... params) {
-            if (characteristicReady) {
-                sendMessage(msgBuffer.toString().getBytes(), BLE_MSG_BUFFER_LEN);
-                wait_ble(BLE_MSG_SEND_INTERVAL);
-            }
-            return "Done";
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            toastMessage(getString(R.string.done));
-        }
     }
 }
