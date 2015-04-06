@@ -61,8 +61,8 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
             double voice = recorder.updateMicStatus(this);
             Log.v(TAG, "voice：" + voice);
             makeChange(changeLightness(voice));
-            wait_ble(BLE_MSG_SEND_INTERVAL);
-            makeChange(0);
+
+            wait_ble(BLE_MSG_SEND_INTERVAL * 2);
         }
     };
 
@@ -82,6 +82,8 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
+                stopRecorder();
+
                 if (isChecked) {
                     multiColorPicker.setVisibility(View.VISIBLE);
                     singleColorPicker.setVisibility(View.GONE);
@@ -125,6 +127,7 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
 
             @Override
             public void onClick(View v) {
+                stopRecorder();
 
                 if (onButton.isChecked()) {
                     if (singleMultiColorSwitch.isChecked()) {
@@ -142,11 +145,6 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
         findViewById(R.id.buttonSun).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if( isRecording && recorder != null){
-                    recorder.stopRecord();
-                    isRecording = false;
-                }
-
                 onButton.setChecked(true);
                 setSingleColor(COLOR_SUN);
             }
@@ -155,11 +153,6 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
         findViewById(R.id.buttonWhite).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if( isRecording && recorder != null){
-                    recorder.stopRecord();
-                    isRecording = false;
-                }
-
                 onButton.setChecked(true);
                 setSingleColor(COLOR_WHITE);
             }
@@ -186,8 +179,7 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
                     recorder.startRecord();
                     isSerial.setText(R.string.listening);
                 } else {
-                    recorder.stopRecord();
-                    isSerial.setText(getString(R.string.ready));
+                    stopRecorder();
 
                     setSingleColor(singleColorPicker.getColor());
                 }
@@ -211,7 +203,7 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
     }
 
     protected void onDestroy() {
-        if( isRecording && recorder != null){
+        if (isRecording && recorder != null) {
             recorder.stopRecord();
         }
 
@@ -244,6 +236,14 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
         colorHSV[2] = (float) Math.min(voice / MAX_DB, 1);
 
         return Color.HSVToColor(colorHSV);
+    }
+
+    private void stopRecorder() {
+        if (isRecording && recorder != null) {
+            recorder.stopRecord();
+            isRecording = false;
+            isSerial.setText(getString(R.string.ready));
+        }
     }
 
     // on change of single color
