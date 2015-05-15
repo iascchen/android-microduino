@@ -1,0 +1,123 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin">
+
+    <TextView android:id="@+id/connection_state"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/disconnected"
+              android:textSize="18sp" android:layout_alignParentLeft="true"
+              android:layout_alignParentTop="true"
+              android:textStyle="italic"/>
+
+    <TextView android:id="@+id/isSerial"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/is_serial"
+              android:textSize="18sp"
+              android:layout_alignParentRight="true"
+              android:layout_alignParentTop="true"
+              android:textStyle="italic"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/connection_state"
+            android:text="X"
+            android:id="@+id/x" android:layout_alignParentStart="true"
+            />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Y"
+            android:id="@+id/y" android:layout_centerHorizontal="true" android:layout_alignBottom="@+id/x"
+            />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/connection_state"
+            android:text="Z"
+            android:id="@+id/z" android:layout_alignParentEnd="true" android:layout_alignBottom="@+id/x"
+            />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/x"
+            android:text="LR"
+            android:id="@+id/lr" android:layout_alignParentStart="true"/>
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@+id/y"-->
+    <!--android:text=" "-->
+    <!--android:id="@+id/s" android:layout_centerHorizontal="true"  />-->
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/infoImage"
+            android:background="@drawable/gu_info" android:layout_alignTop="@+id/toggleButton"
+            android:layout_toStartOf="@+id/h"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/z"
+            android:text="FB"
+            android:id="@+id/fb" android:layout_alignParentEnd="true"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lr"
+            android:text="PW"
+            android:id="@+id/v" android:layout_alignParentStart="true"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fb"
+            android:text="RT"
+            android:id="@+id/h" android:layout_alignParentEnd="true"/>
+
+    <me.iasc.microduino.bluejoypad.VerticalSeekBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/powerBar"
+            android:layout_centerHorizontal="true"
+            android:progressDrawable="@drawable/seekbar_progress"
+            android:thumb="@drawable/seekbar_thumb"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"/>
+
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/rotateLeft"
+            android:src="@drawable/rotate_left"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true">
+    </ImageButton>
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/rotateRight"
+            android:src="@drawable/rotate_right"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true">
+    </ImageButton>
+
+    <ToggleButton
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:id="@+id/toggleButton"
+            android:textOn="Unlocked"
+            android:textOff="Locked" android:enabled="false" android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" android:background="@android:color/holo_red_dark"/>
+</RelativeLayout>
