@@ -15,8 +15,8 @@ You need 4 modules at least: Core, BT, LED, and USBTTL.
 
 Control the led with single color or multi color.
 
-![](led-1.png)
-![](led-2.png)
+![](docs/led-1.png)
+![](docs/led-2.png)
 
 ### Version 2
 

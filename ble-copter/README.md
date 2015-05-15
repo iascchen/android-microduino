@@ -7,7 +7,7 @@ Tested on Android 4.4.
 
 This App use gravity sensor to control Quadcopter.
 
-![](copter_1.jpg)
+![](docs/copter_1.jpg)
 
 1. Place the phone with screen upside. 
 2. Click the unlock button.

@@ -13,4 +13,4 @@ You need 4 modules at least: Core, BT, RTC, and USBTTL.
 2. upload the sketch vis USBTTL,
 3. Play Android App.
 
-![](clock-1.png)
+![](docs/clock-1.png)
