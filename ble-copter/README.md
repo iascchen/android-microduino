@@ -2,10 +2,11 @@
 
 ## ble-copter
 
-Android APP control Microduino Quadcopter(USe BLE Module). You can use it to replace Joypad. 
-Tested on Android 4.4.
+Android APP control Microduino Quadcopter(USe BLE Module). Tested on Android 4.4.
 
-This App use gravity sensor to control Quadcopter.
+This App use gravity sensor to control Quadcopter. 
+Compatiable with MultiWii_EZ_GUI( It can not be used with BLE 4 ). 
+You can use it to replace Joypad. 
 
 ![](docs/copter_1.jpg)
 

@@ -18,7 +18,7 @@
 -->
 <resources>
 
-    <string name="app_name">Microduino BLE LedPad</string>
+    <string name="app_name">mLedPad</string>
     <string name="ble_not_supported">BLE is not supported</string>
     <string name="label_device_address">Device address:</string>
     <string name="label_state">State:</string>
