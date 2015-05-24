@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="header_height">50dip</dimen>
+    <dimen name="footer_height">40dip</dimen>
+    <dimen name="header_text_size">20dip</dimen>
+    <dimen name="footer_text_size">8dip</dimen>
+    <dimen name="rowitem_text_size">16dip</dimen>
+    <dimen name="min_margin_cutoff">10dip</dimen>
+    <dimen name="min_divider_height">1dip</dimen>
+    <dimen name="small_text_height">10dip</dimen>
+    <dimen name="large_text_size">16dip</dimen>
+    <dimen name="extra_large_text_size">22dip</dimen>
+    <dimen name="max_margin_size">15dip</dimen>
+    <dimen name="splashscreen_margin_size">50dip</dimen>
+    <dimen name="about_title_label_top_margin">30dip</dimen>
+    <dimen name="about_title_label_side_margin">20dip</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+</resources>

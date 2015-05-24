@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- bg_style_titled.xml
+* File: 
+* Copyright © 2013, Texas Instruments Incorporated - http://www.ti.com/
+* All rights reserved.
+ -->
+
+    <bitmap
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/bg_tiled"
+    android:tileMode="repeat"
+    android:dither="true" >
+
+</bitmap>

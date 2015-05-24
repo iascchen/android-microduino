@@ -1,0 +1,61 @@
+<resources>
+
+    <string name="app_name">mWifiConfig</string>
+    <string name="menu_settings">Settings</string>
+    <string name="cc3000_version_text">CC3000</string>
+
+    <string name="config">Config</string>
+
+    <string name="config_title">Device Configuration</string>
+    <string name="footer_title">DESIGNED AND DEVELOPED BY</string>
+    <string name="password_hint">Password</string>
+    <string name="ssid_label">SSID</string>
+    <string name="gatewayip">Gateway IP Address</string>
+
+    <string name="key_label">Key</string>
+    <string name="devicename_label">Device Name</string>
+    <string name="start_label">Start</string>
+    <string name="stop_label">Stop</string>
+    <string name="back_label">Back</string>
+    <string name="about_us_label">About Us</string>
+    <string name="contact_label">Contact</string>
+
+
+    <string name="about_us_desc_para_one">[x]cube LABS is a custom interactive mobile design and development
+        studio,providing [x]pertise in UI/UX strategy and cutting edge engineering solutions.
+    </string>
+    <string name="about_us_desc_para_two">We continue to shatter traditional paradigms thanks largely to our dedication
+        to and belief in quality ,communicative design.
+    </string>
+    <string name="about_us_content">Rav</string>
+    <string name="about_us_desc_para_three">If you are planning on integrating the CC3000 into your products, wed love
+        to help.
+    </string>
+
+
+    <string name="xcube_url">www.xcubelabs.com</string>
+    <string name="xcube_contact_email">sales@xcubelabs.com</string>
+    <string name="about_xcube_address">2211 Commerce St. Suit 200,Dallas TX 75201</string>
+
+
+    <string name="alert_cc3x_title">CC3x Alert</string>
+    <string name="alert_invalid_input_title">Invalid input</string>
+    <string name="alert_successfully_connected">CC3x App Connected Successfully</string>
+    <string name="alert_connection_failed">Failed to configure CC3000 device</string>
+    <string name="alert_connection_timeout">Connection to CC3000 was timed out.Please try again</string>
+    <string name="alert_successfully_failed">Failed to configure CC3000 device</string>
+    <string name="alert_no_network_title">No Network</string>
+    <string name="alert_invalid_password_msg">Please enter valid password</string>
+    <string name="alert_invalid_gatewayip_msg">Please enter valid Gateway IP address</string>
+    <string name="alert_invalid_ssid_mesg">Please enter valid SSID</string>
+    <string name="alert_invalid_key_mesg">Please enter valid Key exactly 16 characters</string>
+    <string name="alert_no_wifi_mesg">WiFi not available.Please check your WiFi connection.</string>
+
+
+    <string name="config_default_gateway_val">127.0.0.1</string>
+    <string name="config_default_device_name">Device Name</string>
+
+    <!--Utility Strings -->
+    <string name="cc3x_string_ok">ok</string>
+
+</resources>

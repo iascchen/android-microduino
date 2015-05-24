@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- configuration.xml
+* File: 
+* Copyright © 2013, Texas Instruments Incorporated - http://www.ti.com/
+* All rights reserved.
+ -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@android:style/Theme.NoTitleBar.Fullscreen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_style_tiled" >
+
+    <include
+        android:id="@+id/cc3x_config_header_view"
+        layout="@layout/cc3x_headerlayout" />
+
+    <LinearLayout
+        android:id="@+id/cofig_topbarRootview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cc3x_config_header_view"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/min_margin_cutoff"
+        android:background="@drawable/custom_table_row"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/footer_height"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/config_ssid_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/min_margin_cutoff"
+                android:layout_weight="1"
+                android:text="@string/ssid_label"
+                android:textColor="@color/black"
+                android:textSize="@dimen/rowitem_text_size"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/config_ssid_input"
+                android:layout_width="match_parent"
+                android:background="@null"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|right"
+                android:layout_marginLeft="@dimen/min_margin_cutoff"
+                android:layout_marginRight="@dimen/min_margin_cutoff"
+                android:layout_weight="1"
+                android:maxLength="32"
+                android:paddingLeft="5dp"
+                android:hint="@string/ssid_label"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/rowitem_text_size" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/min_divider_height"
+            android:background="@color/grey_background" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/footer_height"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/config_passwd_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/min_margin_cutoff"
+                android:layout_weight="1"
+                android:text="@string/password_hint"
+                android:textColor="@color/black"
+                android:textSize="@dimen/rowitem_text_size"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/config_passwd_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/min_margin_cutoff"
+                android:layout_marginRight="@dimen/min_margin_cutoff"
+                android:layout_weight="1"
+                android:background="@null"
+                android:paddingLeft="5dp"
+                android:hint="@string/password_hint"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/rowitem_text_size" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/min_divider_height"
+            android:background="@color/grey_background" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/footer_height"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/config_gateway_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/min_margin_cutoff"
+                android:layout_weight="1"
+                android:text="@string/gatewayip"
+                android:textColor="@color/black"
+                android:textSize="@dimen/rowitem_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/config_gateway_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:layout_marginLeft="@dimen/min_margin_cutoff"
+                android:layout_marginRight="@dimen/min_margin_cutoff"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="@string/config_default_gateway_val"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/rowitem_text_size" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/min_divider_height"
+            android:background="@color/grey_background" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/footer_height"
+            android:orientation="horizontal" android:visibility="gone">
+
+            <TextView
+                android:id="@+id/config_key_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/min_margin_cutoff"
+                android:layout_weight="1"
+                android:text="@string/key_label"
+                android:textColor="@color/black"
+                android:textSize="@dimen/rowitem_text_size"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/config_key_input"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/min_margin_cutoff"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/key_label"
+                    android:imeOptions="actionNext"
+                    android:maxLength="@integer/config_key_max_length"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/rowitem_text_size" />
+
+                <CheckBox
+                    android:id="@+id/config_key_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/min_margin_cutoff" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/min_divider_height"
+            android:background="@color/grey_background" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/footer_height"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/config_device_name_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/min_margin_cutoff"
+                android:layout_weight="1"
+                android:text="@string/devicename_label"
+                android:textColor="@color/black"
+                android:textSize="@dimen/rowitem_text_size"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/config_device_name_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/min_margin_cutoff"
+                android:layout_marginRight="@dimen/min_margin_cutoff"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="@string/config_default_device_name"
+                android:imeOptions="actionDone"
+                android:paddingLeft="5dp"
+                android:singleLine="true"
+                android:text="@string/cc3000_version_text"
+                android:textColor="@color/black"
+                android:textSize="@dimen/rowitem_text_size" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/max_margin_size"
+        android:layout_marginRight="@dimen/max_margin_size" >
+
+        <Button
+            android:id="@+id/config_start_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/btn_selector"
+            android:gravity="center"
+            android:minHeight="@dimen/header_height"
+            android:text="@string/start_label"
+            android:textColor="@color/white" />
+
+        <ProgressBar
+            android:id="@+id/config_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:visibility="invisible"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/min_margin_cutoff"
+            android:indeterminateDrawable="@drawable/progress_drawable" />
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Status"
+                android:id="@+id/status"
+                android:layout_centerHorizontal="true" android:layout_below="@+id/config_start_button"
+                android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+</RelativeLayout>

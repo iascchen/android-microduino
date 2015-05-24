@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- bg_selector.xml
+* File: 
+* Copyright © 2013, Texas Instruments Incorporated - http://www.ti.com/
+* All rights reserved.
+ -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/selection_focus_btn" android:state_pressed="true"/>
+    <item android:drawable="@drawable/selection" android:state_pressed="false"></item>
+
+</selector>
