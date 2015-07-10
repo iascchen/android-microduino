@@ -30,6 +30,9 @@ import me.iasc.microduino.bluelight.ble.BluetoothLeService;
 import me.iasc.microduino.bluelight.colorpicker.ColorPicker;
 import me.iasc.microduino.bluelight.colorpicker.MultiColorPicker;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * For a given BLE device, this Activity provides the user interface to connect, display data,
  * and display GATT services and characteristics supported by the device.  The Activity
@@ -41,6 +44,8 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
 
     public static int COLOR_WHITE = Color.WHITE;
     public static int COLOR_SUN = Color.parseColor("#ffffdd6e");
+
+    public static int HEARTBEAT_INTERVAL = 1000;
 
     public static final int MAX_DB = 100;
 
@@ -55,6 +60,8 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
     private RecordManager recorder;
     private boolean isRecording = false;
     private float[] colorHSV = new float[]{0f, 0f, 0f};
+
+    private static Timer heartbeatTimer;
 
     Runnable mUpdateMicStatusTimer = new Runnable() {
         public void run() {
@@ -141,7 +148,6 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
             }
         });
 
-
         findViewById(R.id.buttonSun).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,6 +213,8 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
             recorder.stopRecord();
         }
 
+        stopTimer(heartbeatTimer);
+
         super.onDestroy();
     }
 
@@ -219,6 +227,8 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
                 characteristicReady = true;
                 isSerial.setText(getString(resourceId));
                 toastMessage(getString(resourceId));
+
+                heartbeatTimer = startHeartbeatTimer(0, HEARTBEAT_INTERVAL);
             }
         });
     }
@@ -248,7 +258,7 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
 
     // on change of single color
     private void makeChange(int color) {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder("C:");
 
         sb.append(Color.red(color)).append(",")
                 .append(Color.green(color)).append(",")
@@ -260,7 +270,8 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
 
     private void makeChange(int[] colors) {
         for (int i = 0; i < colors.length; i++) {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder("C:");
+
             sb.append(Color.red(colors[i])).append(",")
                     .append(Color.green(colors[i])).append(",")
                     .append(Color.blue(colors[i])).append(",")
@@ -269,6 +280,24 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
 
             // add delay for ble massage transfer
             wait_ble(BLE_MSG_SEND_INTERVAL);
+        }
+    }
+
+    private Timer startHeartbeatTimer(long delay, long period) {
+        Timer mTimer = new Timer();
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                sendMessage(".\n");
+            }
+        }, delay, period);
+        return mTimer;
+    }
+
+    private void stopTimer(Timer mTimer) {
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
         }
     }
 }
