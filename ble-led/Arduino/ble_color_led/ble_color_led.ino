@@ -1,10 +1,15 @@
 #include <Adafruit_NeoPixel.h>
 
-#include <SoftwareSerial.h>
+/**
+ * If you use microduino, please use mySerial, uncomment these code
+ */
+// #include <SoftwareSerial.h>
+// SoftwareSerial mySerial(4, 5); //RX,TX
+// #define my_Serial mySerial
 
-SoftwareSerial mySerial(4, 5); //RX,TX
-
-//#define my_Serial mySerial
+/**
+ * If you use mCookie, please use Serial1
+ */
 #define my_Serial Serial1
 
 #define PIXEL_PIN    A0    // Digital IO pin connected to the NeoPixels.
