@@ -3,20 +3,22 @@
 ## ble-led 
 
 Android APP control Microduino LED Board.
-Tested on Android 4.3(Samsung S3) and 4.4(Sony Xperia).
+Tested on 4.4.2.
 
-You need 4 modules at least: Core, BT, LED, and USBTTL.
+### Version 2.1 for mCookie
 
-1. Stack them together,
-2. upload the sketch vis USBTTL,
-3. Play Android App.
+![](docs/mlight_01.png)
+![](docs/mlight_02.png)
 
-### Version 1 
+1. Revised the UI for Microduino
+2. Revised the sketch file compatiable with mCookie
 
-Control the led with single color or multi color.
+You need these modules: 
 
-![](docs/led-1.png)
-![](docs/led-2.png)
+CoreUSB, Bluetooth, SensorHub, BM and Color LED.
+
+![](docs/mCookie_01.jpg)
+![](docs/mCookie_02.jpg)
 
 ### Version 2
 
@@ -25,3 +27,11 @@ Enhanced function with single color mode.
 1. Add White color button
 2. Add Sun Color button
 3. Add Listen music mode, the led will flash follow music. 
+
+### Version 1 
+
+Control the led with single color or multi color.
+
+![](docs/led-1.png)
+![](docs/led-2.png)
+

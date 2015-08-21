@@ -81,7 +81,7 @@ public class DeviceScanActivity extends ListActivity {
 
         mHandler = new Handler();
 
-        // Use this toogle_bg to determine whether BLE is supported on the device.  Then you can
+        // Use this check to determine whether BLE is supported on the device.  Then you can
         // selectively disable BLE-related features.
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
