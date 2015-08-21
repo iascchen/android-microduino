@@ -16,6 +16,7 @@
 
 package me.iasc.microduino.bluelight;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
@@ -24,6 +25,7 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.*;
@@ -42,6 +44,8 @@ public class DeviceScanActivity extends ListActivity {
 
     // Stops scanning after 10 seconds.
     private static final long SCAN_PERIOD = 10000;
+
+    ActionBar actionbar;
 
     private LeDeviceListAdapter mLeDeviceListAdapter;
     private BluetoothAdapter mBluetoothAdapter;
@@ -67,10 +71,17 @@ public class DeviceScanActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().setTitle(R.string.title_devices);
+
+        this.getListView().setBackgroundResource(R.drawable.list_bg);
+
+        actionbar = getActionBar();
+
+        actionbar.setTitle(R.string.title_devices);
+        actionbar.setIcon(R.drawable.icon_white);
+
         mHandler = new Handler();
 
-        // Use this check to determine whether BLE is supported on the device.  Then you can
+        // Use this toogle_bg to determine whether BLE is supported on the device.  Then you can
         // selectively disable BLE-related features.
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
@@ -98,11 +109,15 @@ public class DeviceScanActivity extends ListActivity {
             menu.findItem(R.id.menu_stop).setVisible(false);
             menu.findItem(R.id.menu_scan).setVisible(true);
             menu.findItem(R.id.menu_refresh).setActionView(null);
+
+            actionbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.ble_scanned)));
         } else {
             menu.findItem(R.id.menu_stop).setVisible(true);
             menu.findItem(R.id.menu_scan).setVisible(false);
             menu.findItem(R.id.menu_refresh).setActionView(
                     R.layout.actionbar_indeterminate_progress);
+
+            actionbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.ble_scanning)));
         }
         return true;
     }

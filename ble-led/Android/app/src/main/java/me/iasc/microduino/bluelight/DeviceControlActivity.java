@@ -16,14 +16,17 @@
 
 package me.iasc.microduino.bluelight;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import me.iasc.microduino.bluelight.ble.BluetoothLeService;
@@ -49,10 +52,13 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
 
     public static final int MAX_DB = 100;
 
+    private ActionBar actionbar;
+
     private MultiColorPicker multiColorPicker;
     private ColorPicker singleColorPicker;
 
     private Switch singleMultiColorSwitch;
+    private TextView singleMultiColorTextView;
     private ToggleButton onButton;
 
     private FloatingActionsMenu floatingMenu;
@@ -78,11 +84,22 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
         setContentView(R.layout.gatt_services_characteristics);
         super.onCreate(savedInstanceState);
 
+//        this.getView().setBackgroundResource(R.drawable.list_bg);
+////        activity = this;
+
+        actionbar = getActionBar();
+
+        actionbar.setHomeAsUpIndicator(R.drawable.back);
+        actionbar.setIcon(R.drawable.icon_white);
+
+        actionbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.ble_unconnect)));
+
         multiColorPicker = (MultiColorPicker) findViewById(R.id.multiColorPicker);
         singleColorPicker = (ColorPicker) findViewById(R.id.colorPicker);
 
         floatingMenu = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
 
+        singleMultiColorTextView = (TextView) findViewById(R.id.textSingleMulti);
         singleMultiColorSwitch = (Switch) findViewById(R.id.switchSingleMulti);
 
         singleMultiColorSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -95,10 +112,14 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
                     multiColorPicker.setVisibility(View.VISIBLE);
                     singleColorPicker.setVisibility(View.GONE);
                     floatingMenu.setVisibility(View.GONE);
+
+                    singleMultiColorTextView.setText(getString(R.string.multi_colors));
                 } else {
                     multiColorPicker.setVisibility(View.GONE);
                     singleColorPicker.setVisibility(View.VISIBLE);
                     floatingMenu.setVisibility(View.VISIBLE);
+
+                    singleMultiColorTextView.setText(getString(R.string.single_color));
                 }
             }
         });
@@ -183,7 +204,9 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
             public void onClick(View v) {
                 if (!isRecording) {
                     recorder.startRecord();
-                    isSerial.setText(R.string.listening);
+                    isRecording = true;
+                    // isSerial.setText(R.string.listening);
+                    singleMultiColorTextView.setText(R.string.listening);
                 } else {
                     stopRecorder();
 
@@ -192,11 +215,14 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
 
                 onButton.setChecked(true);
 
-                isRecording = !isRecording;
+//                isRecording = !isRecording;
+
             }
         });
 
         singleMultiColorSwitch.setChecked(false);
+
+        enableView(false);
 
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
@@ -225,10 +251,28 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
                 wait_ble(3000);
 
                 characteristicReady = true;
-                isSerial.setText(getString(resourceId));
+                // isSerial.setText(getString(resourceId));
+                actionbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.ble_connected)));
+                enableView(true);
+
                 toastMessage(getString(resourceId));
 
                 heartbeatTimer = startHeartbeatTimer(0, HEARTBEAT_INTERVAL);
+            }
+        });
+    }
+
+    protected void updateUnreadyState(final int resourceId) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                characteristicReady = false;
+                // isSerial.setText(getString(resourceId));
+
+                actionbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.ble_unconnect)));
+                enableView(false);
+
+                toastMessage(getString(resourceId));
             }
         });
     }
@@ -248,11 +292,19 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
         return Color.HSVToColor(colorHSV);
     }
 
+    private void enableView(boolean enable){
+        onButton.setEnabled(enable);
+        multiColorPicker.setEnabled(enable);
+        singleMultiColorSwitch.setEnabled(enable);
+        floatingMenu.setEnabled(enable);
+    }
+
     private void stopRecorder() {
         if (isRecording && recorder != null) {
             recorder.stopRecord();
             isRecording = false;
-            isSerial.setText(getString(R.string.ready));
+            // isSerial.setText(getString(R.string.ready));
+             singleMultiColorTextView.setText(R.string.single_color);
         }
     }
 
@@ -288,7 +340,8 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
         mTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                sendMessage(".\n");
+                if(characteristicReady)
+                    sendMessage(".\n");
             }
         }, delay, period);
         return mTimer;

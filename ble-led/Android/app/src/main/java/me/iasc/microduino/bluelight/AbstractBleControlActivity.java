@@ -21,12 +21,12 @@ import android.app.AlertDialog;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.*;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.*;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 import me.iasc.microduino.bluelight.ble.BluetoothLeService;
 
@@ -43,12 +43,12 @@ public abstract class AbstractBleControlActivity extends Activity {
 
     protected Activity activity;
 
-    protected TextView isSerial, mConnectionState;
+    //    protected TextView isSerial, mConnectionState;
     protected ImageView infoButton;
 
     protected BluetoothLeService mBluetoothLeService;
     protected BluetoothGattCharacteristic characteristicTX, characteristicRX;
-    protected boolean mConnected = false, characteristicReady = false;
+    protected static boolean mConnected = false, characteristicReady = false;
 
     protected StringBuilder msgBuffer;
 
@@ -89,6 +89,7 @@ public abstract class AbstractBleControlActivity extends Activity {
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
                 updateConnectionState(R.string.disconnected);
+                updateUnreadyState(R.string.unready);
                 invalidateOptionsMenu();
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 BluetoothGattService gattService = mBluetoothLeService.getSoftSerialService();
@@ -109,7 +110,8 @@ public abstract class AbstractBleControlActivity extends Activity {
 
                     updateReadyState(R.string.ready);
                 } else {
-                    isSerial.setText("Serial can't be found");
+//                    isSerial.setText("Serial can't be found");
+                    updateUnreadyState(R.string.unready);
                 }
 
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
@@ -137,10 +139,10 @@ public abstract class AbstractBleControlActivity extends Activity {
         currDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
         currDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
-        // Sets up UI references.
-        mConnectionState = (TextView) findViewById(R.id.connection_state);
-        // is serial present?
-        isSerial = (TextView) findViewById(R.id.isSerial);
+//        // Sets up UI references.
+//        mConnectionState = (TextView) findViewById(R.id.connection_state);
+//        // is serial present?
+//        isSerial = (TextView) findViewById(R.id.isSerial);
 
         infoButton = (ImageView) findViewById(R.id.infoImage);
         infoButton.setOnClickListener(new View.OnClickListener() {
@@ -202,7 +204,7 @@ public abstract class AbstractBleControlActivity extends Activity {
         getMenuInflater().inflate(R.menu.gatt_services, menu);
         if (mConnected) {
             menu.findItem(R.id.menu_connect).setVisible(false);
-            menu.findItem(R.id.menu_disconnect).setVisible(true);
+            menu.findItem(R.id.menu_disconnect).setVisible(false);
         } else {
             menu.findItem(R.id.menu_connect).setVisible(true);
             menu.findItem(R.id.menu_disconnect).setVisible(false);
@@ -230,7 +232,20 @@ public abstract class AbstractBleControlActivity extends Activity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mConnectionState.setText(resourceId);
+                // mConnectionState.setText(resourceId);
+            }
+        });
+    }
+
+    protected void updateUnreadyState(final int resourceId) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                characteristicReady = false;
+
+                // isSerial.setText(getString(resourceId));
+                getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.ble_unconnect)));
+
             }
         });
     }
@@ -241,8 +256,8 @@ public abstract class AbstractBleControlActivity extends Activity {
             public void run() {
                 characteristicReady = true;
 
-                isSerial.setText(getString(resourceId));
-                toastMessage(getString(resourceId));
+                // isSerial.setText(getString(resourceId));
+                getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.ble_connected)));
             }
         });
     }
@@ -282,6 +297,6 @@ public abstract class AbstractBleControlActivity extends Activity {
     }
 
     public void toastMessage(String msg) {
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
     }
 }

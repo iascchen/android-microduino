@@ -22,98 +22,50 @@
               xmlns:fab="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_margin="10dp"
-              android:gravity="center">
+              android:layout_height="match_parent"
+              android:gravity="center" android:background="@drawable/view_bg">
 
     <RelativeLayout android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="40dp">
-        <TextView android:id="@+id/connection_state"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/disconnected"
-                  android:textSize="18sp" android:layout_alignParentLeft="true" android:textStyle="italic"/>
-        <TextView android:id="@+id/isSerial"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/is_serial"
-                  android:textSize="18sp"
-                  android:layout_alignParentRight="true" android:textStyle="italic"/>
-    </RelativeLayout>
+                    android:layout_margin="10sp">
 
-    <Switch android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/switchSingleMulti"
-            android:textOff="@string/single_color"
-            android:textOn="@string/multi_colors"
-            android:checked="false"
-            android:layout_gravity="right" android:textStyle="bold"/>
-
-    <me.iasc.microduino.bluelight.colorpicker.MultiColorPicker
-            android:id="@+id/multiColorPicker"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_weight="0.8"
-            android:visibility="gone"/>
-
-    <me.iasc.microduino.bluelight.colorpicker.ColorPicker
-            android:id="@+id/colorPicker"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_weight="0.8" />
-
-    <RelativeLayout android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="40dp">
-
-        <ToggleButton
-                android:layout_width="200dp"
+        <Switch android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/toggleButton"
-                android:layout_gravity="center_horizontal"
-                android:checked="false" android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
-                android:textStyle="bold"/>
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/infoImage"
-                android:background="@drawable/gu_info" android:layout_centerVertical="true"
-                android:layout_alignParentEnd="true"/>
+                android:id="@+id/switchSingleMulti"
+                android:textOff="     "
+                android:textOn="     "
+                android:layout_marginTop="5sp"
+                android:checked="false"
+                android:layout_alignParentEnd="true"
+
+                android:thumb="@drawable/switch_bg"
+                android:track="@drawable/track_bg"
+
+                android:textStyle="bold"
+                android:theme="@style/Base.TextAppearance.AppCompat.Widget.Switch"/>
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:layout_below="@+id/switchSingleMulti"
+                  android:layout_alignStart="@+id/switchSingleMulti"
+                  android:id="@+id/textSingleMulti"
+                  android:textSize="10sp"
+                  android:layout_marginLeft="10sp"
+                  android:textColor="@color/half_black"
+                android:text="Single Light"/>
 
         <com.getbase.floatingactionbutton.FloatingActionsMenu
                 android:id="@+id/multiple_actions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_addButtonColorNormal="@color/pink"
-                fab:fab_addButtonColorPressed="@color/pink_pressed"
-                fab:fab_addButtonPlusIconColor="@color/half_black"
+                fab:fab_addButtonColorNormal="@color/half_light"
+                fab:fab_addButtonColorPressed="@color/half_black"
+                fab:fab_addButtonPlusIconColor="@color/white"
                 fab:fab_addButtonStrokeVisible="false"
                 fab:fab_addButtonSize="mini"
+                fab:fab_icon="@drawable/light"
                 fab:fab_expandDirection="right"
-                android:layout_alignTop="@+id/toggleButton" android:layout_alignParentStart="true">
-
-            <com.getbase.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/buttonWhite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    fab:fab_icon="@drawable/light"
-                    fab:fab_colorNormal="@color/white"
-                    fab:fab_colorPressed="@color/white_pressed"
-                    fab:fab_size="mini"/>
-
-            <com.getbase.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/buttonSun"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    fab:fab_icon="@drawable/light"
-                    fab:fab_colorNormal="#ffffdd6e"
-                    fab:fab_colorPressed="#ffffdd6e"
-                    fab:fab_size="mini"/>
+                android:layout_alignParentStart="true">
 
             <com.getbase.floatingactionbutton.FloatingActionButton
                     android:id="@+id/buttonMusic"
@@ -122,6 +74,24 @@
                     fab:fab_icon="@drawable/music"
                     fab:fab_colorNormal="@color/blue_semi_transparent"
                     fab:fab_colorPressed="@color/blue_semi_transparent_pressed"
+                    fab:fab_size="mini"/>
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/buttonSun"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    fab:fab_icon="@drawable/light"
+                    fab:fab_colorNormal="#fff3dc49"
+                    fab:fab_colorPressed="#fff3dc49"
+                    fab:fab_size="mini"/>
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/buttonWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    fab:fab_icon="@drawable/light"
+                    fab:fab_colorNormal="@color/white"
+                    fab:fab_colorPressed="@color/white_pressed"
                     fab:fab_size="mini"/>
 
             <!--
@@ -136,5 +106,56 @@
                     -->
 
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+
     </RelativeLayout>
+    <me.iasc.microduino.bluelight.colorpicker.MultiColorPicker
+            android:id="@+id/multiColorPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="0sp"
+            android:layout_gravity="center"
+            android:layout_weight="0.8"
+            android:visibility="gone"/>
+
+    <me.iasc.microduino.bluelight.colorpicker.ColorPicker
+            android:id="@+id/colorPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="0sp"
+            android:layout_gravity="center"
+            android:layout_weight="0.8"/>
+
+    <RelativeLayout android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20sp">
+
+        <ToggleButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/toggleButton"
+                android:layout_gravity="center_horizontal"
+                android:checked="false"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:textOn=""
+                android:textOff=""
+                android:background="@null"
+                android:button="@drawable/toogle_bg"/>
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/infoImage"
+                android:background="@drawable/gu_info" android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:visibility="gone"/>
+
+
+    </RelativeLayout>
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/notice"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"/>
 </LinearLayout>
