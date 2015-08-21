@@ -7,18 +7,18 @@ Tested on 4.4.2.
 
 ### Version 2.1 for mCookie
 
-![](docs/mlight_01.png)
-![](docs/mlight_02.png)
+![](docs/mlight_1.png)
+![](docs/mlight_2.png)
 
 1. Revised the UI for Microduino
 2. Revised the sketch file compatiable with mCookie
 
-You need these modules: 
+You need these modules:  
 
 CoreUSB, Bluetooth, SensorHub, BM and Color LED.
 
-![](docs/mCookie_01.jpg)
-![](docs/mCookie_02.jpg)
+![](docs/mCookie_1.jpg)
+![](docs/mCookie_2.jpg)
 
 ### Version 2
 
