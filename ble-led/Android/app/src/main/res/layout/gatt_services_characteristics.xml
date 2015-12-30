@@ -38,12 +38,9 @@
                 android:layout_marginTop="5sp"
                 android:checked="false"
                 android:layout_alignParentEnd="true"
-
                 android:thumb="@drawable/switch_bg"
                 android:track="@drawable/track_bg"
-
-                android:textStyle="bold"
-                android:theme="@style/Base.TextAppearance.AppCompat.Widget.Switch"/>
+                android:textStyle="bold"/>
 
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:layout_below="@+id/switchSingleMulti"

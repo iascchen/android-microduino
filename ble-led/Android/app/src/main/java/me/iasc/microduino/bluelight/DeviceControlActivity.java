@@ -248,7 +248,7 @@ public class DeviceControlActivity extends AbstractBleControlActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                wait_ble(3000);
+                wait_ble(1000);
 
                 characteristicReady = true;
                 // isSerial.setText(getString(resourceId));

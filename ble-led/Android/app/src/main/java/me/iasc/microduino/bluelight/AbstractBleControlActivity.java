@@ -36,7 +36,7 @@ public abstract class AbstractBleControlActivity extends Activity {
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
 
-    public static int BLE_MSG_SEND_INTERVAL = 100;
+    public static int BLE_MSG_SEND_INTERVAL = 60;
     public static int BLE_MSG_BUFFER_LEN = 18;
 
     protected String currDeviceName, currDeviceAddress;
