@@ -1,7 +1,9 @@
-# README
+# README(deprecated)
 
-**These projects are deprecated. ** Please try this supported Android 6 version: 
+Please try this supported Android 6 version: 
 https://github.com/iascchen/microduino_mSerial_android
+
+**These projects are deprecated. ** 
 
 Android Apps for Microdino.
 
