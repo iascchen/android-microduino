@@ -1,5 +1,8 @@
 # README
 
+**These projects are deprecated. ** Please try this supported Android 6 version: 
+https://github.com/iascchen/microduino_mSerial_android
+
 Android Apps for Microdino.
 
 These Apps are always communicating Microduino via BLE.
